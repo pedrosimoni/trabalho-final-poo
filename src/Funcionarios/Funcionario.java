@@ -2,6 +2,7 @@ package Funcionarios;
 import Excecoes.*;
 import Sistema.*;
 import java.io.*;
+import java.time.LocalDate;
 
 abstract class Funcionario implements Serializable {
     protected String nome;
@@ -9,12 +10,12 @@ abstract class Funcionario implements Serializable {
     protected long rg;
     protected String estadoCivil;
     protected String endereco;
-    protected double dataAdmissao;
+    protected LocalDate dataAdmissao;
     protected long numCarteira;
     protected double salario;
 
 
-    public Funcionario(String nome, long cpf, long rg, String estadoCivil, String endereco, double dataAdmissao, long numCarteira) throws CPFInvalido{
+    public Funcionario(String nome, long cpf, long rg, String estadoCivil, String endereco, LocalDate dataAdmissao, long numCarteira) throws CPFInvalido{
         this.nome = nome;
         ValidadorCPF.valida(cpf);
         this.cpf = cpf;
@@ -34,7 +35,7 @@ abstract class Funcionario implements Serializable {
         this.rg = 0;
         this.estadoCivil = "Não cadastrado";
         this.endereco = "Não cadastrado";
-        this.dataAdmissao = 0;
+        this.dataAdmissao = LocalDate.of(0,1,1);
         this.numCarteira = 0;
     }
 
@@ -44,7 +45,7 @@ abstract class Funcionario implements Serializable {
         this.rg = 0;
         this.estadoCivil = "Não cadastrado";
         this.endereco = "Não cadastrado";
-        this.dataAdmissao = 0;
+        this.dataAdmissao = LocalDate.of(0,1,1);
         this.numCarteira = 0;
     }
 

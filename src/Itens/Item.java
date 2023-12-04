@@ -55,6 +55,7 @@ abstract public class Item implements Serializable {
         return precoCusto;
     }
 
+
     public void setPrecoCusto(double precoCusto) {
         this.precoCusto = precoCusto;
     }

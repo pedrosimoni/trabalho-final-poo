@@ -4,6 +4,9 @@ import Funcionarios.*;
 import Itens.*;
 import Enums.*;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Restaurante {
@@ -15,9 +18,10 @@ public class Restaurante {
         public static ArrayList<Ingrediente> estoque = new ArrayList<Ingrediente>();
         public static ArrayList<Pedido> pedidosMensais = new ArrayList<Pedido>();
         private static double caixa;
+        //public static int diaMes = 1;
+        //public static double dia = 01012023;
+        public static LocalDateTime dataCentral = LocalDateTime.now();
         public static DiasEnum diaSemana = DiasEnum.SEGUNDA;
-        public static int diaMes = 1;
-        public static double dia = 01012023;
 
         public static void mostrarGarcons(){
             System.out.println("Garçons trabalhando hoje: ");
@@ -45,4 +49,17 @@ public class Restaurante {
         public static void adicionarCaixa(double venda){
             caixa += venda;
         }
+
+        public static void  setDiaSemana(){
+            DayOfWeek day= dataCentral.getDayOfWeek();
+            switch (day){
+                case MONDAY -> diaSemana = DiasEnum.SEGUNDA;
+                case TUESDAY-> diaSemana = DiasEnum.TERCA;
+                case WEDNESDAY -> diaSemana = DiasEnum.QUARTA;
+                case THURSDAY -> diaSemana = DiasEnum.QUINTA;
+                case FRIDAY -> diaSemana = DiasEnum.SEXTA;
+                case SATURDAY -> diaSemana = DiasEnum.SABADO;
+                case SUNDAY -> diaSemana = DiasEnum.DOMINGO;
+            }
+    }
 }

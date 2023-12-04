@@ -29,6 +29,7 @@ public class Prato extends Item{
     }
 
     public void calculaPrecoCusto(){
+        precoCusto = 0;
         for(Ingrediente i : ingredientes){
             precoCusto += i.getPrecoCusto();
         }

@@ -3,6 +3,12 @@ import Sistema.*;
 import Funcionarios.*;
 import Itens.*;
 
+import java.time.DateTimeException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 
@@ -13,34 +19,36 @@ public class Main {
         pers.leBase();
         TimerTask tt = new TimerTask() {
             public void run() {
-                System.out.println("Hoje é dia " + Restaurante.diaMes + ", " + Restaurante.diaSemana.toString());
-                if (Restaurante.diaMes == 30) {
-                    System.out.println("Fim de mês!!");
-                    Restaurante.diaMes = 1;
+                if(Restaurante.dataCentral.getHour() == 0){
+                    Restaurante.setDiaSemana();
+                    //System.out.println("Hoje é dia " + Restaurante.dataCentral.getDayOfMonth() + ", " + Restaurante.diaSemana.toString());
+                    if (Restaurante.dataCentral.getDayOfMonth() == Restaurante.dataCentral.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth()) {
+                        System.out.println("Fim de mês!!");
 
-                    if (Garcom.numPedidos > Garcom.metaPedidos) {
-                        Garcom.bateuMeta = true;
-                        System.out.println("Os garçons bateram a meta de pedidos feitos esse mês!!");
-                    } else {
-                        Garcom.bateuMeta = false;
-                        System.out.println("Infelizmente os garçons não bateram a meta esse mês!!");
-                    }
+                        if (Garcom.numPedidos > Garcom.metaPedidos) {
+                            Garcom.bateuMeta = true;
+                            System.out.println("Os garçons bateram a meta de pedidos feitos esse mês!!");
+                        } else {
+                            Garcom.bateuMeta = false;
+                            System.out.println("Infelizmente os garçons não bateram a meta esse mês!!");
+                        }
 
-                    Garcom.numPedidos = 0;
-                    for (Garcom g : Restaurante.garcons) {
-                        g.calculaSalario();
-                    }
+                        Garcom.numPedidos = 0;
+                        for (Garcom g : Restaurante.garcons) {
+                            g.calculaSalario();
+                        }
 
-                    for (Cozinheiro c : Restaurante.cozinheiros) {
-                        c.calculaSalario();
-                        c.setNumPratos(0);
+                        for (Cozinheiro c : Restaurante.cozinheiros) {
+                            c.calculaSalario();
+                            c.setNumPratos(0);
+                        }
                     }
                 }
-                Restaurante.diaSemana = Restaurante.diaSemana.next();
-                Restaurante.diaMes++;
+                Restaurante.dataCentral = Restaurante.dataCentral.plusHours(1);
+                //System.out.println("Hora atual = " + Restaurante.dataCentral.getHour());
             }
         };
-        t.scheduleAtFixedRate(tt, 0, 86400000);
+        t.scheduleAtFixedRate(tt, 0, 1000);
 
         /*
         TimerTask tn = new TimerTask(){
@@ -50,13 +58,14 @@ public class Main {
         };
         t.scheduleAtFixedRate(tn, 1000, 1000);
         */
-        int op, tamanho, qtd;
+        int op, tamanho, qtd,ano,mes,dia;
         Scanner sc = new Scanner(System.in);
         String nome, codigo, descricao, tempoPreparo, estadoCivil, endereco, diaFolga, tipoEmbalagem,inputOp;
-        double precoUnitario, salarioBase, calorias, dataAdimissão, precoCusto;
+        double precoUnitario, salarioBase, calorias, precoCusto;
         ArrayList<Ingrediente> lista = new ArrayList<Ingrediente>();
         long cpf, rg, numCarteira;
         boolean pratoEspecializado,repeteLoopMenu = true,repetExcessoes;
+        LocalDate dataAdimissão;
 
         do {
             System.out.println("Bem vindo ao sistema!");
@@ -144,10 +153,26 @@ public class Main {
                     System.out.print("\nDeseja considerar hoje como a Aata de Adimissão do novo garçom? (s/n)");
                     inputOp = sc.nextLine();
                     if (inputOp.charAt(0) == 's' || inputOp.charAt(0) == 'S') {
-                        dataAdimissão = Restaurante.dia;
+                        dataAdimissão = Restaurante.dataCentral.toLocalDate();
                     } else {
-                        System.out.print("\nDigite a Data de Adimissão: ");
-                        dataAdimissão = sc.nextFloat();
+                        dataAdimissão = null;
+                        do {
+                            repetExcessoes = false;
+                            try {
+                                System.out.print("\nDigite a Data de Adimissão (ddmmaa): ");
+                                System.out.print("Ano: ");
+                                ano = sc.nextInt();
+                                System.out.print("Mes: ");
+                                mes = sc.nextInt();
+                                System.out.print("Dia: ");
+                                dia = sc.nextInt();
+                                sc.nextLine();
+                                dataAdimissão = LocalDate.of(ano, mes, dia);
+                            } catch (DateTimeException d) {
+                                System.out.println("Você digitou uma data inválida, por favor digite novamente");
+                                repetExcessoes = true;
+                            }
+                        }while(repetExcessoes);
                     }
                     System.out.print("\nDigite o Número da Carteira do novo garçom: ");
                     numCarteira = sc.nextLong();
@@ -186,10 +211,27 @@ public class Main {
                     System.out.print("\nDeseja considerar hoje como a Aata de Adimissão do novo cozinheiro? (s/n)");
                     inputOp = sc.nextLine();
                     if (inputOp.charAt(0) == 's' || inputOp.charAt(0) == 'S') {
-                        dataAdimissão = Restaurante.dia;
+                        dataAdimissão = Restaurante.dataCentral.toLocalDate();
                     } else {
-                        System.out.print("\nDigite a Data de Adimissão (ddmmaa): ");
-                        dataAdimissão = sc.nextFloat();
+                        dataAdimissão = null;
+                        do {
+                            repetExcessoes = false;
+                            try {
+                                System.out.print("\nDigite a Data de Adimissão (ddmmaa): ");
+                                System.out.print("Ano: ");
+                                ano = sc.nextInt();
+                                System.out.print("Mes: ");
+                                mes = sc.nextInt();
+                                System.out.print("Dia: ");
+                                dia = sc.nextInt();
+                                sc.nextLine();
+                                dataAdimissão = LocalDate.of(ano, mes, dia);
+                            } catch (DateTimeException d) {
+                                System.out.println("Você digitou uma data inválida, por favor digite novamente");
+                                repetExcessoes = true;
+                            }
+                        }while(repetExcessoes);
+
                     }
                     System.out.print("\nDigite o Número da Carteira do novo cozinheiro: ");
                     numCarteira = sc.nextLong();
