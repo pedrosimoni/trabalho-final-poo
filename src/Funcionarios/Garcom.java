@@ -1,5 +1,6 @@
 package Funcionarios;
 import Enums.DiasEnum;
+import Excecoes.CPFInvalido;
 
 public class Garcom extends Funcionario{
     private DiasEnum diaFolga;
@@ -9,7 +10,7 @@ public class Garcom extends Funcionario{
     private static double bonificacao = 500;
     public static boolean bateuMeta;
 
-    public Garcom(String nome, long cpf, long rg, String estadoCivil, String endereco, double dataAdmissao, long numCarteira, String diaFolga, double salarioBase){
+    public Garcom(String nome, long cpf, long rg, String estadoCivil, String endereco, double dataAdmissao, long numCarteira, String diaFolga, double salarioBase) throws CPFInvalido {
         super(nome, cpf, rg, estadoCivil, endereco, dataAdmissao, numCarteira);
         this.diaFolga = DiasEnum.valueOf(diaFolga);
     }

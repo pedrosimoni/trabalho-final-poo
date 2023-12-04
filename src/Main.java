@@ -1,3 +1,4 @@
+import Excecoes.CPFInvalido;
 import Sistema.*;
 import Funcionarios.*;
 import Itens.*;
@@ -55,7 +56,7 @@ public class Main {
         double precoUnitario, salarioBase, calorias, dataAdimissão, precoCusto;
         ArrayList<Ingrediente> lista = new ArrayList<Ingrediente>();
         long cpf, rg, numCarteira;
-        boolean pratoEspecializado,repeteLoopMenu = true;
+        boolean pratoEspecializado,repeteLoopMenu = true,repetExcessoes;
 
         do {
             System.out.println("Bem vindo ao sistema!");
@@ -155,7 +156,18 @@ public class Main {
                     diaFolga = sc.nextLine();
                     System.out.print("Digite o Salário Base do novo garçom: ");
                     salarioBase = sc.nextFloat();
-                    Garcom g = new Garcom(nome, cpf, rg, estadoCivil, endereco, dataAdimissão, numCarteira, diaFolga, salarioBase);
+                    Garcom g = null;
+                    do{
+                        repetExcessoes = false;
+                        try {
+                            g = new Garcom(nome, cpf, rg, estadoCivil, endereco, dataAdimissão, numCarteira, diaFolga, salarioBase);
+                        } catch (CPFInvalido f) {
+                            System.out.println("Você digitou um cpf errado, por favor digite novamente: ");
+                            cpf = sc.nextLong();
+                            repetExcessoes = true;
+                        }
+                    }while(repetExcessoes);
+
                     g.calculaSalario();
                     Restaurante.garcons.add(g);
                 }
@@ -183,7 +195,18 @@ public class Main {
                     numCarteira = sc.nextLong();
                     System.out.print("\nO novo cozinheiro é especializado em Pratos Principais(1) ou Sobremesas(2)?\n ");
                     pratoEspecializado = sc.nextInt() != 2;
-                    Cozinheiro c = new Cozinheiro(nome, cpf, rg, estadoCivil, endereco, dataAdimissão, numCarteira, pratoEspecializado);
+                    Cozinheiro c = null;
+                    do{
+                        repetExcessoes = false;
+                        try {
+                            c = new Cozinheiro(nome, cpf, rg, estadoCivil, endereco, dataAdimissão, numCarteira, pratoEspecializado);
+                        } catch (CPFInvalido f) {
+                            System.out.print("Você digitou um cpf errado, por favor digite novamente: ");
+                            cpf = sc.nextLong();
+                            repetExcessoes = true;
+                        }
+                    }while(repetExcessoes);
+
                     c.calculaSalario();
                     Restaurante.cozinheiros.add(c);
                 }

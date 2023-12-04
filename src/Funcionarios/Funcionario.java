@@ -14,15 +14,10 @@ abstract class Funcionario implements Serializable {
     protected double salario;
 
 
-    public Funcionario(String nome, long cpf, long rg, String estadoCivil, String endereco, double dataAdmissao, long numCarteira){
+    public Funcionario(String nome, long cpf, long rg, String estadoCivil, String endereco, double dataAdmissao, long numCarteira) throws CPFInvalido{
         this.nome = nome;
-        int teste = ValidadorCPF.valida(cpf);
-        if(teste == 0){
-            this.cpf = 0;
-            //throw new CPFInvalido("CPF digitado não existe! Tente novamente.");
-        }else{
-            this.cpf = cpf;
-        }
+        ValidadorCPF.valida(cpf);
+        this.cpf = cpf;
         this.rg = rg;
         this.estadoCivil = estadoCivil;
         this.endereco = endereco;
@@ -32,15 +27,10 @@ abstract class Funcionario implements Serializable {
         System.out.println("Funcionário " + nome + " cadastrado com sucesso!");
     }
 
-    public Funcionario(String nome, long cpf){
+    public Funcionario(String nome, long cpf) throws CPFInvalido{
         this.nome = nome;
-        int teste = ValidadorCPF.valida(cpf);
-        if(teste == 0){
-            this.cpf = 0;
-            //throw new CPFInvalido("CPF digitado não existe! Tente novamente.");
-        }else{
-            this.cpf = cpf;
-        }
+        ValidadorCPF.valida(cpf);
+        this.cpf = cpf;
         this.rg = 0;
         this.estadoCivil = "Não cadastrado";
         this.endereco = "Não cadastrado";

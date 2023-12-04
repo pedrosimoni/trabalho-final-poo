@@ -1,12 +1,14 @@
 package Funcionarios;
 
+import Excecoes.CPFInvalido;
+
 public class Cozinheiro extends Funcionario{
     private boolean pratoEspecializado; //True = Principal || False = Sobremesa
     private int numPratos = 0;
     private static double bonificacaoPrincipal = 50.35;
     private static double bonificacaoSobremesa = 23.15;
 
-    public Cozinheiro(String nome, long cpf, long rg, String estadoCivil, String endereco, double dataAdmissao, long numCarteira, boolean pratoEspecializado){
+    public Cozinheiro(String nome, long cpf, long rg, String estadoCivil, String endereco, double dataAdmissao, long numCarteira, boolean pratoEspecializado) throws CPFInvalido {
         super(nome, cpf, rg, estadoCivil, endereco, dataAdmissao, numCarteira);
         this.pratoEspecializado = pratoEspecializado;
     }

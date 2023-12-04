@@ -1,8 +1,10 @@
 package Sistema;
+import Excecoes.CPFInvalido;
+
 import static java.lang.Math.toIntExact;
 
 public abstract class ValidadorCPF {
-    public static int valida(long cpfEntrada) { //1 = Correto || 0 = Incorreto
+    public static void valida(long cpfEntrada) throws CPFInvalido{ //1 = Correto || 0 = Incorreto
         int[] vcpf = new int[11];
         long cpf = cpfEntrada;
         long num=10000000000L;
@@ -42,7 +44,7 @@ public abstract class ValidadorCPF {
         if (dig1==10) dig1=0;
         if (dig2==10) dig2=0;
             //verifica se o digito verificador 1 e 2 obtidos são iguais aos digitos verificadores do cpf digitado
-        if (dig1==vcpf[9] && (dig2==vcpf[10])) return 1;
-        else return 0;
+        if (dig1==vcpf[9] && (dig2==vcpf[10])) return;
+        throw new CPFInvalido("CPF digitado não existe! Tente novamente.");
     }
 }
