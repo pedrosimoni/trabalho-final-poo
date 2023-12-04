@@ -6,6 +6,7 @@ import Itens.*;
 import Funcionarios.*;
 
 public class Persistencia {
+    private static String pathBase = new File("").getAbsolutePath().concat("/src");
     private FileOutputStream arqOutBebidas;
     private FileOutputStream arqOutCozinheiros;
     private FileOutputStream arqOutEstoque;
@@ -22,25 +23,29 @@ public class Persistencia {
 
     public Persistencia(){
         try{
-            arqOutBebidas = new FileOutputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Bebidas");
-            arqOutCozinheiros = new FileOutputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Cozinheiros");
-            arqOutEstoque = new FileOutputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Estoque");
-            arqOutGarcons = new FileOutputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Garcons");
-            arqOutPratosPrincipais = new FileOutputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Pratos_Principais");
-            arqOutSobremesas = new FileOutputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Sobremesas");
-
-            arqInBebidas = new FileInputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Sobremesas");
-            arqInCozinheiros = new FileInputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Cozinheiros");
-            arqInEstoque = new FileInputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Estoque");
-            arqInGarcons = new FileInputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Garcons");
-            arqInPratosPrincipais = new FileInputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Pratos_Principais");
-            arqInSobremesas = new FileInputStream("C:/Faculdade/POO/Trabalho_Final/src/Arquivos/Sobremesas");
+            arqInBebidas = new FileInputStream(pathBase +"/Arquivos/Bebidas.txt");
+            arqInCozinheiros = new FileInputStream(pathBase +"/Arquivos/Cozinheiros.txt");
+            arqInEstoque = new FileInputStream(pathBase +"/Arquivos/Estoque.txt");
+            arqInGarcons = new FileInputStream(pathBase +"/Arquivos/Garcons.txt");
+            arqInPratosPrincipais = new FileInputStream(pathBase +"/Arquivos/Pratos_Principais.txt");
+            arqInSobremesas = new FileInputStream(pathBase +"/Arquivos/Sobremesas.txt");
         }catch(IOException f){
             System.out.println("Problema na abertura dos arquivos: " + f);
         }
     }
 
     public void gravaBase() {
+        try{
+            arqOutBebidas = new FileOutputStream(pathBase + "/Arquivos/Bebidas.txt");
+            arqOutCozinheiros = new FileOutputStream(pathBase +"/Arquivos/Cozinheiros.txt");
+            arqOutEstoque = new FileOutputStream(pathBase +"/Arquivos/Estoque.txt");
+            arqOutGarcons = new FileOutputStream(pathBase +"/Arquivos/Garcons.txt");
+            arqOutPratosPrincipais = new FileOutputStream(pathBase +"/Arquivos/Pratos_Principais.txt");
+            arqOutSobremesas = new FileOutputStream(pathBase +"/Arquivos/Sobremesas.txt");
+        }catch (IOException f){
+            System.out.println("Problema na abertura dos arquivos da gravação" + f);
+        }
+
         try {
             ObjectOutputStream os = new ObjectOutputStream(arqOutBebidas);
             for (Bebida o : Restaurante.bebidas) {
@@ -74,41 +79,99 @@ public class Persistencia {
     }
 
     public void leBase(){
+        ObjectInputStream is;
         try{
-            ObjectInputStream is = new ObjectInputStream(arqInBebidas);
-            while(is.readObject() != null){
-                Bebida x = (Bebida) is.readObject();
-                Restaurante.bebidas.add(x);
+            is = new ObjectInputStream(arqInBebidas);
+            Bebida x = (Bebida) is.readObject();
+            while(x != null){
+                try{
+                    Restaurante.bebidas.add(x);
+                    x = (Bebida) is.readObject();
+                }catch (EOFException f){
+                    is.close();
+                    break;
+                }
             }
-            is = new ObjectInputStream(arqInCozinheiros);
-            while(is.readObject() != null){
-                Cozinheiro x = (Cozinheiro) is.readObject();
-                Restaurante.cozinheiros.add(x);
-            }
-            is = new ObjectInputStream(arqInEstoque);
-            while(is.readObject() != null){
-                Ingrediente x = (Ingrediente) is.readObject();
-                Restaurante.estoque.add(x);
-            }
-            is = new ObjectInputStream(arqInGarcons);
-            while(is.readObject() != null){
-                Garcom x = (Garcom) is.readObject();
-                Restaurante.garcons.add(x);
-            }
-            is = new ObjectInputStream(arqInPratosPrincipais);
-            while(is.readObject() != null){
-                PratoPrincipal x = (PratoPrincipal) is.readObject();
-                Restaurante.pratosPrincipais.add(x);
-            }
-            is = new ObjectInputStream(arqInSobremesas);
-            while(is.readObject() != null){
-                Sobremesa x = (Sobremesa) is.readObject();
-                Restaurante.sobremesas.add(x);
-            }
-
-            is.close();
         }catch(Exception f) {
-            System.out.println("Problema na gravação da base de dados: " + f);
+            System.out.println("Problema na leitura das Bebidas: " + f);
+        }
+        try{
+            is = new ObjectInputStream(arqInCozinheiros);
+            Cozinheiro x = (Cozinheiro) is.readObject();
+            while(x != null){
+                try{
+                    //System.out.println("Nome do cozinheiro" + x.getNome());
+                    Restaurante.cozinheiros.add(x);
+                    x = (Cozinheiro) is.readObject();
+                }catch (EOFException f){
+                    is.close();
+                    break;
+                }
+            }
+        }catch(Exception f) {
+            System.out.println("Problema na leitura dos cozinheiros: " + f);
+        }
+        try{
+            is = new ObjectInputStream(arqInEstoque);
+            Ingrediente x = (Ingrediente) is.readObject();
+            while(x != null){
+                try{
+                    Restaurante.estoque.add(x);
+                    x = (Ingrediente) is.readObject();
+                }catch (EOFException f) {
+                    is.close();
+                    break;
+                }
+            }
+        }catch(Exception f) {
+            System.out.println("Problema na leitura do estoque: " + f);
+        }
+        try{
+            is = new ObjectInputStream(arqInGarcons);
+            Garcom x = (Garcom) is.readObject();
+            while(x != null){
+                try{
+                    //System.out.println("Nome do Graçon: "+ x.getNome());
+                    Restaurante.garcons.add(x);
+                    x = (Garcom) is.readObject();
+                }catch (EOFException f) {
+                    is.close();
+                    break;
+                }
+            }
+        }catch(Exception f) {
+            System.out.println("Problema na leitura dos gracons" + f);
+        }
+        try{
+            is = new ObjectInputStream(arqInPratosPrincipais);
+            PratoPrincipal x = (PratoPrincipal) is.readObject();
+            while(x != null){
+                try{
+                    Restaurante.pratosPrincipais.add(x);
+                    x = (PratoPrincipal) is.readObject();
+                }
+               catch (EOFException f){
+                   is.close();
+                   break;
+               }
+            }
+        }catch(Exception f) {
+            System.out.println("Problema na leitura do pratos principais" + f);
+        }
+        try{
+            is = new ObjectInputStream(arqInSobremesas);
+            Sobremesa x = (Sobremesa) is.readObject();
+            while(x != null){
+                try{
+                    Restaurante.sobremesas.add(x);
+                    x = (Sobremesa) is.readObject();
+                }catch (EOFException f){
+                    is.close();
+                    break;
+                }
+            }
+        }catch(Exception f) {
+            System.out.println("Problema na leitura das sobremesas: " + f);
         }
     }
 

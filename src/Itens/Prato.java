@@ -3,7 +3,7 @@ package Itens;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Prato extends Item implements Serializable{
+public class Prato extends Item{
     protected ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
     protected String descricao;
     protected String tempoPreparo;
@@ -16,9 +16,9 @@ public class Prato extends Item implements Serializable{
     }
 
     public void mostrarBasico(){
-        System.out.println("Nome: " + nome);
-        System.out.println("    " + descricao);
-        System.out.println("    R$" + precoUnitario);
+        System.out.print(" : " + nome);
+        System.out.print("    " + descricao);
+        System.out.print("    R$" + precoUnitario);
     }
 
     public void venda(){

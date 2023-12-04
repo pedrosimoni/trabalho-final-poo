@@ -6,7 +6,7 @@ import Enums.*;
 
 import java.util.ArrayList;
 
-public abstract class Restaurante {
+public class Restaurante {
         public static ArrayList<Garcom> garcons = new ArrayList<Garcom>();
         public static ArrayList<Cozinheiro> cozinheiros = new ArrayList<Cozinheiro>();
         public static ArrayList<PratoPrincipal> pratosPrincipais = new ArrayList<PratoPrincipal>();

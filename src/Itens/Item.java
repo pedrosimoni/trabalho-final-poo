@@ -2,7 +2,9 @@ package Itens;
 
 import Sistema.Restaurante;
 
-abstract public class Item{
+import java.io.Serializable;
+
+abstract public class Item implements Serializable {
     protected String nome;
     protected String codigo;
     protected double precoUnitario;

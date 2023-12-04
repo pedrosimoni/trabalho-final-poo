@@ -65,4 +65,8 @@ abstract class Funcionario implements Serializable {
     public double calculaSalario(){
         return salario;
     }
+
+    public String getNome() {
+        return nome;
+    }
 }
