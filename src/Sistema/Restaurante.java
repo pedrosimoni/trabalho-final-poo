@@ -27,7 +27,7 @@ public class Restaurante {
             System.out.println("Garçons trabalhando hoje: ");
             for(Garcom g: garcons){
                 if(g.getDiaFolga() != diaSemana){
-                    g.mostrarNome();
+                    g.mostrar();
                 }
             }
         }
@@ -35,14 +35,22 @@ public class Restaurante {
         public static void mostrarCozinheiros(){
             System.out.println("Cozinheiros trabalhando hoje: ");
             for(Cozinheiro c: cozinheiros){
-               c.mostrarNome();
+               c.mostrar();
             }
         }
 
-        public static void mostrarPratos(){
-            System.out.println("Pratos do dia: ");
-            for(PratoPrincipal p: pratosPrincipais){
-               p.mostrarBasico();
+        public static void menu(){
+            System.out.print("\nPratos Principais: \n\n");
+            for (PratoPrincipal pn : pratosPrincipais) {
+                pn.mostrarBasico();
+            }
+            System.out.print("\nBebidas: \n\n");
+            for (Bebida bn : Restaurante.bebidas) {
+                bn.mostrarBasico();
+            }
+            System.out.print("\nSobremesas: \n\n");
+            for (Sobremesa sn : Restaurante.sobremesas) {
+                sn.mostrarBasico();
             }
         }
 

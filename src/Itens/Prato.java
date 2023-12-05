@@ -16,9 +16,9 @@ public class Prato extends Item{
     }
 
     public void mostrarBasico(){
-        System.out.print(" : " + nome);
-        System.out.print("    " + descricao);
-        System.out.print("    R$" + precoUnitario);
+        System.out.println(nome + ": ");
+        System.out.println("    " + descricao);
+        System.out.println("    R$" + precoUnitario);
     }
 
     public void venda(){

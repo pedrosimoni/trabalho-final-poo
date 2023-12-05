@@ -49,9 +49,7 @@ abstract class Funcionario implements Serializable {
         this.numCarteira = 0;
     }
 
-    public void mostrarNome(){
-        System.out.print(nome);
-    }
+    public void mostrar(){}
 
     public double calculaSalario(){
         return salario;

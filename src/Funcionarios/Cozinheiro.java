@@ -29,6 +29,20 @@ public class Cozinheiro extends Funcionario{
         numPratos++;
    }
 
+   public void mostrar() {
+       System.out.println("Nome: " + nome);
+       System.out.println("    Cargo: Cozinheiro");
+
+       if(pratoEspecializado){
+           System.out.println("    Prato escpecializado: Prato Principal");
+       }else{
+           System.out.println("    Prato especializado: Sobremesa");
+       }
+
+       calculaSalario();
+       System.out.println("    Salário: R$" + salario);
+   }
+
     public boolean isPratoEspecializado() {
         return pratoEspecializado;
     }

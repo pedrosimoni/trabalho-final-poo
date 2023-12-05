@@ -53,9 +53,9 @@ public class Pedido {
             System.out.println("    " + i.getNome());
         }
         System.out.println("Cozinheiro Responsável: ");
-        cozinheiro.mostrarNome();
+        cozinheiro.mostrar();
         System.out.println("Garçom responsável: ");
-        garcom.mostrarNome();
+        garcom.mostrar();
         System.out.println("Valor total: " + valorTotal);
         System.out.println("Data e Hora de Registro: " + data + horaRegistro);
         System.out.println("Hora e Forma do pagamento: " + horaPagamento + pagamento);

@@ -67,8 +67,8 @@ public class Main {
         boolean pratoEspecializado,repeteLoopMenu = true,repetExcessoes;
         LocalDate dataAdimissão;
 
+        System.out.println("Bem vindo ao sistema!");
         do {
-            System.out.println("Bem vindo ao sistema!");
             System.out.println("1 -  Cadastrar novo prato principal");
             System.out.println("2 -  Cadastrar nova sobremesa");
             System.out.println("3 -  Cadastrar novo garçom");
@@ -299,21 +299,7 @@ public class Main {
                     System.out.println();
                 }
                 case 9 -> {
-                    System.out.print("\nPratos Principais: \n");
-                    for (PratoPrincipal pn : Restaurante.pratosPrincipais) {
-                        pn.mostrarBasico();
-                        System.out.println();
-                    }
-                    System.out.print("\nBebidas: \n");
-                    for (Bebida bn : Restaurante.bebidas) {
-                        bn.mostrarBasico();
-                        System.out.println();
-                    }
-                    System.out.print("\nSobremesas: \n");
-                    for (Sobremesa sn : Restaurante.sobremesas) {
-                        sn.mostrarBasico();
-                        System.out.println();
-                    }
+                    Restaurante.menu();
                 }
                 case 10 -> {
                     for (Pedido pn : Restaurante.pedidosMensais) {
@@ -321,19 +307,9 @@ public class Main {
                     }
                 }
                 case 11 -> {
-                    System.out.println("Cozinheiros: ");
-                    for (Cozinheiro cn : Restaurante.cozinheiros) {
-                        System.out.print("    Nome: ");
-                        cn.mostrarNome();
-                        System.out.println("    Salário: " + cn.calculaSalario());
-                    }
-                    System.out.println("Garçons: ");
-                    for (Garcom gn : Restaurante.garcons) {
-                        System.out.print("    Nome: ");
-                        gn.mostrarNome();
-                        System.out.println("    Salário: " + gn.calculaSalario());
 
-                    }
+                    Restaurante.mostrarCozinheiros();
+                    Restaurante.mostrarGarcons();
                 }
                 case 12->{
                     repeteLoopMenu = false;

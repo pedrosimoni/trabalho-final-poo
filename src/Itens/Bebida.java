@@ -14,10 +14,10 @@ public class Bebida extends Item implements PodeVender, Serializable {
     }
 
     public void mostrarBasico(){
-        System.out.print(" : " + nome);
-        System.out.print("    " + tamanho);
-        System.out.print("    " + tipoEmbalagem.toString());
-        System.out.print("    R$" + precoUnitario);
+        System.out.println(nome + ": ");
+        System.out.println("    " + tamanho);
+        System.out.println("    " + tipoEmbalagem.toString());
+        System.out.println("    R$" + precoUnitario);
     }
 
     public void venda(){
