@@ -2,6 +2,8 @@ package Sistema;
 import Enums.FormaPagamentoEnum;
 import Itens.*;
 import Funcionarios.*;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -14,15 +16,14 @@ public class Pedido {
     private Cozinheiro cozinheiro;
     private Garcom garcom;
     private double valorTotal = 0;
-    private String data;
-    private String horaRegistro;
-    private String horaPagamento;
+    private LocalDateTime dataHoraRegistro;
+    private LocalDateTime dataHoraPagamento;
     private FormaPagamentoEnum pagamento;
     private static int limitador_pratos_principais = 10;
     private static int limitador_sobremesas = 4;
     private static int limitador_bebidas = 8;
 
-    public Pedido(Item []itensPedido, Cozinheiro cozinheiro, Garcom garcom,  String data, String horaRegistro){
+    public Pedido(Item []itensPedido, Cozinheiro cozinheiro, Garcom garcom,  String data){
         this.itensPedido.addAll(Arrays.asList(itensPedido));
 
         for(Item i : itensPedido){
@@ -31,20 +32,19 @@ public class Pedido {
 
         this.cozinheiro = cozinheiro;
         this.garcom = garcom;
-        this.data = data;
-        this.horaRegistro = horaRegistro;
+        this.dataHoraRegistro = Restaurante.dataCentral;
 
         garcom.pedidoFeito();
         cozinheiro.pedidoFeito();
 
+        Restaurante.pedidosMensais.add(this);
         System.out.println("Pedido registrado com sucesso!");
     }
 
-    public Pedido(Cozinheiro cozinheiro, Garcom garcom, String data, String horaRegistro){
+    public Pedido(Cozinheiro cozinheiro, Garcom garcom, String data){
         this.cozinheiro = cozinheiro;
         this.garcom = garcom;
-        this.data = data;
-        this.horaRegistro = horaRegistro;
+        this.dataHoraRegistro = Restaurante.dataCentral;
     }
 
     public Pedido(){
@@ -74,8 +74,8 @@ public class Pedido {
         System.out.println("Garçom responsável: ");
         garcom.mostrar();
         System.out.println("Valor total: " + valorTotal);
-        System.out.println("Data e Hora de Registro: " + data + horaRegistro);
-        System.out.println("Hora e Forma do pagamento: " + horaPagamento + pagamento);
+        System.out.println("Data e Hora de Registro: " + dataHoraRegistro.toString());
+        System.out.println("Data e Hora e Forma do pagamento: " + dataHoraPagamento.toString() + pagamento);
 
     }
 
@@ -85,8 +85,8 @@ public class Pedido {
         }
     }
 
-    public void pagarConta(String horaPagamento, FormaPagamentoEnum pagamento){
-        this.horaPagamento = horaPagamento;
+    public void pagarConta(FormaPagamentoEnum pagamento){
+        this.dataHoraPagamento = Restaurante.dataCentral;
         this.pagamento = pagamento;
     }
 

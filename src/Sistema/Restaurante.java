@@ -20,8 +20,6 @@ public class Restaurante {
         public static ArrayList<Pedido> pedidosMensais = new ArrayList<Pedido>();
         public static Stack<Pedido> pedidosEsperandoAprovacao = new Stack<Pedido>();
         public static double caixa;
-        //public static int diaMes = 1;
-        //public static double dia = 01012023;
         public static LocalDateTime dataCentral = LocalDateTime.now();
         public static DiasEnum diaSemana = DiasEnum.SEGUNDA;
 
