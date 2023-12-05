@@ -69,8 +69,8 @@ public class Main {
 
         System.out.println("Bem vindo ao sistema!");
         do {
-            System.out.println("1 -  Cadastrar novo prato principal");
-            System.out.println("2 -  Cadastrar nova sobremesa");
+            System.out.println("1 -  Cadastrar novo prato principal                                 (R$" + Restaurante.caixa + ") Caixa");
+            System.out.println("2 -  Cadastrar nova sobremesa                                       (" + Restaurante.pedidosEsperandoAprovacao.size() + ") Pedidos");
             System.out.println("3 -  Cadastrar novo garçom");
             System.out.println("4 -  Cadastrar novo cozinheiro");
             System.out.println("5 -  Cadastrar nova bebida");
@@ -299,7 +299,9 @@ public class Main {
                     System.out.println();
                 }
                 case 9 -> {
+
                     Restaurante.menu();
+
                 }
                 case 10 -> {
                     for (Pedido pn : Restaurante.pedidosMensais) {
