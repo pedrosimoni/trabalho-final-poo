@@ -12,9 +12,9 @@ import java.util.Scanner;
 import static Sistema.Restaurante.diaSemana;
 
 public class Pedido {
-    private ArrayList<Item> itensPedido = new ArrayList<Item>();
+    private ArrayList<Item> itensPedido = new ArrayList<Item>();//
     private Cozinheiro cozinheiro;
-    private Garcom garcom;
+    private Garcom garcom;//
     private double valorTotal = 0;
     private LocalDateTime dataHoraRegistro;
     private LocalDateTime dataHoraPagamento;
@@ -106,6 +106,8 @@ public class Pedido {
             Bebida b = Restaurante.bebidas.get(rand.nextInt(Restaurante.bebidas.size()));
             itensPedido.add(b);
         }
+
+        garcom = Restaurante.garcons.get(rand.nextInt(Restaurante.garcons.size()));
     }
 
     public void escolherCozinheiros(){
