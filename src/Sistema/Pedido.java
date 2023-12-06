@@ -37,7 +37,6 @@ public class Pedido {
         garcom.pedidoFeito();
         cozinheiro.pedidoFeito();
 
-        Restaurante.pedidosMensais.add(this);
         System.out.println("Pedido registrado com sucesso!");
     }
 
@@ -50,11 +49,8 @@ public class Pedido {
     public Pedido(){
         this.cozinheiro = null;
         this.garcom = null;
-        this.data = "0";
-        this.horaRegistro = "0";
-        this.horaPagamento = "0";
+        this.dataHoraRegistro = Restaurante.dataCentral;
         this.pagamento = null;
-
     }
 
     public void adicionaPedido(Item []itensPedidos){

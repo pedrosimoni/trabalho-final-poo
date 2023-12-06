@@ -1,5 +1,6 @@
 package Itens;
 
+import Excecoes.IngredientesInsuficientes;
 import Sistema.Restaurante;
 
 import java.io.Serializable;

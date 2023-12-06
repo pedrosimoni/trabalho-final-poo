@@ -19,8 +19,4 @@ public class Bebida extends Item implements PodeVender, Serializable {
         System.out.println("    " + tipoEmbalagem.toString());
         System.out.println("    R$" + precoUnitario);
     }
-
-    public void venda(){
-        super.venda();
-    }
 }

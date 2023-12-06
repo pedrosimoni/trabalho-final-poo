@@ -320,6 +320,5 @@ public class Main {
         } while (repeteLoopMenu);
         pers.gravaBase();
         pers.fecharArquivos();
-        System.out.println("Acabou");
     }
 }

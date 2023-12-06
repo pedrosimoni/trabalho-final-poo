@@ -6,13 +6,14 @@ import Itens.*;
 import Funcionarios.*;
 
 public class Persistencia {
-    private static String pathBase = new File("").getAbsolutePath().concat("/src");
+    private static final String pathBase = new File("").getAbsolutePath().concat("/src");
     private FileOutputStream arqOutBebidas;
     private FileOutputStream arqOutCozinheiros;
     private FileOutputStream arqOutEstoque;
     private FileOutputStream arqOutGarcons;
     private FileOutputStream arqOutPratosPrincipais;
     private FileOutputStream arqOutSobremesas;
+    private FileOutputStream arqOutPedidos;
 
     private FileInputStream arqInBebidas;
     private FileInputStream arqInCozinheiros;
@@ -20,6 +21,7 @@ public class Persistencia {
     private FileInputStream arqInGarcons;
     private FileInputStream arqInPratosPrincipais;
     private FileInputStream arqInSobremesas;
+    private FileInputStream arqInPedidos;
 
     public Persistencia(){
         try{
@@ -29,6 +31,7 @@ public class Persistencia {
             arqInGarcons = new FileInputStream(pathBase +"/Arquivos/Garcons.txt");
             arqInPratosPrincipais = new FileInputStream(pathBase +"/Arquivos/Pratos_Principais.txt");
             arqInSobremesas = new FileInputStream(pathBase +"/Arquivos/Sobremesas.txt");
+            arqInPedidos = new FileInputStream(pathBase +"/Arquivos/Pedidos.txt");
         }catch(IOException f){
             System.out.println("Problema na abertura dos arquivos: " + f);
         }
@@ -42,6 +45,7 @@ public class Persistencia {
             arqOutGarcons = new FileOutputStream(pathBase +"/Arquivos/Garcons.txt");
             arqOutPratosPrincipais = new FileOutputStream(pathBase +"/Arquivos/Pratos_Principais.txt");
             arqOutSobremesas = new FileOutputStream(pathBase +"/Arquivos/Sobremesas.txt");
+            arqOutPedidos = new FileOutputStream(pathBase +"/Arquivos/Pedidos.txt");
         }catch (IOException f){
             System.out.println("Problema na abertura dos arquivos da gravação" + f);
         }
@@ -71,7 +75,10 @@ public class Persistencia {
             for (Sobremesa o : Restaurante.sobremesas) {
                 os.writeObject(o);
             }
-
+            os = new ObjectOutputStream(arqOutPedidos);
+            for(Pedido o : Restaurante.pedidosMensais){
+                os.writeObject(o);
+            }
             os.close();
         } catch (IOException f) {
             System.out.println("Problema na gravação da base de dados: " + f);
@@ -172,6 +179,21 @@ public class Persistencia {
             }
         }catch(Exception f) {
             System.out.println("Problema na leitura das sobremesas: " + f);
+        }
+        try{
+            is = new ObjectInputStream(arqInPedidos);
+            Pedido x = (Pedido) is.readObject();
+            while(x!=null){
+                try{
+                    Restaurante.pedidosMensais.add(x);
+                    x = (Pedido) is.readObject();
+                }catch (EOFException f){
+                    is.close();
+                    break;
+                }
+            }
+        }catch (Exception f){
+            System.out.println("Problema na leitura dos pedidos: " + f);
         }
     }
 
