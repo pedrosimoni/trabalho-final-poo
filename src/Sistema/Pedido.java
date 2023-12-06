@@ -15,7 +15,7 @@ public class Pedido {
     private ArrayList<Item> itensPedido = new ArrayList<Item>();//
     private Cozinheiro cozinheiro;
     private Garcom garcom;//
-    private double valorTotal = 0;
+    private double valorTotal = 0;//
     private LocalDateTime dataHoraRegistro;
     private LocalDateTime dataHoraPagamento;
     private FormaPagamentoEnum pagamento;
@@ -108,6 +108,7 @@ public class Pedido {
         }
 
         garcom = Restaurante.garcons.get(rand.nextInt(Restaurante.garcons.size()));
+        calculaTotal();
     }
 
     public void escolherCozinheiros(){
