@@ -1,8 +1,0 @@
-olhar estoque:
-olhar cardápio:
-ver histório de pedidos no mes:
-calcular e mostrar salários dos funcionarios:
-
-
-
-

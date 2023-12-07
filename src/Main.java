@@ -1,4 +1,6 @@
+import Enums.DiasEnum;
 import Enums.EmbalagensEnum;
+import Enums.FormaPagamentoEnum;
 import Excecoes.CPFInvalido;
 import Excecoes.SaldoInsuficiente;
 import Excecoes.IngredientesInsuficientes;
@@ -14,6 +16,8 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
+
+import static Enums.FormaPagamentoEnum.*;
 
 
 public class Main {
@@ -64,14 +68,15 @@ public class Main {
             Scanner sc = new Scanner(System.in);
             ArrayList<Item> listaItens = new ArrayList<Item>();
 
-            System.out.println("N/A -  Aprovar pedidos                               (R$" + Restaurante.caixa + ") Caixa");
+            System.out.println("\nN/A -  Aprovar pedidos                               (R$" + Restaurante.caixa + ") Caixa");
             System.out.println(" 1  -  Fazer compras                                 (" + Restaurante.pedidosEsperandoAprovacao.size() + ") Pedidos");
-            System.out.println(" 2  -  Adicionar pedido manualmente");
-            System.out.println(" 3  -  Adicionar itens a um pedido");
-            System.out.println(" 4  -  Cadastrar/Remover itens");
-            System.out.println(" 5  -  Conferir restaurante");
-            System.out.println(" 6  -  Operações financeiras");
-            System.out.println(" 7  -  Sair");
+            System.out.println(" 2  -  Dar baixa em um pedido");
+            System.out.println(" 3  -  Adicionar pedido manualmente");
+            System.out.println(" 4  -  Adicionar itens a um pedido");
+            System.out.println(" 5  -  Cadastrar/Remover itens");
+            System.out.println(" 6  -  Conferir restaurante");
+            System.out.println(" 7  -  Operações financeiras");
+            System.out.println(" 8  -  Sair");
             System.out.print("Escolha uma opção: ");
             op = sc.nextInt();
             sc.nextLine();
@@ -89,6 +94,30 @@ public class Main {
                 }
                 case 2 -> {
 
+                    System.out.print("\nPressione 'x' para escolher um pedido: ");
+                    for (Pedido p : Restaurante.pedidosAbertos) {
+                        System.out.print("\n- Mesa " + p.getMesa() + ": ");
+                        if (sc.nextLine().equals("x")) {
+                            System.out.print("\nEscolha uma forma de pagamento: ");
+                            System.out.print("\n(1) Dinheiro / (2) Débito / (3) Crédito");
+                            int opt = sc.nextInt();
+                            if(opt == 1){
+                                p.pagarConta(DINHEIRO);
+                            }else if(opt == 2){
+                                p.pagarConta(DEBITO);
+                            }else if(opt == 3){
+                                p.pagarConta(CREDITO);
+                            }
+
+                            break;
+                        }
+
+
+                    }
+                }
+
+
+                case 3 -> {
                     System.out.print("\nPressione 'x' para adicionar o prato: \n");
                     listaItens.clear();
                     for (PratoPrincipal p : Restaurante.pratosPrincipais){
@@ -124,10 +153,8 @@ public class Main {
                     }catch (IngredientesInsuficientes i){
                         System.out.print("\nPedido não efetuado!");
                     }
-
                 }
-                case 3 -> {
-
+                case 4 -> {
                     System.out.print("\nPressione 'x' para escolher um pedido: ");
                     for(Pedido p : Restaurante.pedidosAbertos){
                         System.out.print("\n- Mesa " + p.getMesa() + ": ");
@@ -148,25 +175,16 @@ public class Main {
                             }
                         }
                     }
-
-                }
-                case 4 -> {
-
-                    cadastrarXremover();
-
                 }
                 case 5 -> {
-
-                    conferir();
-
+                    cadastrarXremover();
                 }
-
                 case 6 -> {
-
-
+                    conferir();
+                }
+                case 7 -> {
                     boolean repeteLoopMenuInterno = true;
                     do {
-
                         int opi;
 
                         System.out.println("1 - Pagar dívidas");
@@ -182,7 +200,7 @@ public class Main {
                                 pagarDividas();
                             }
                             case 2 -> {
-                                    balnçoMensal();
+                                balnçoMensal();
                             }
                             case 3 -> {
                                 operacoesDeCaixa();
@@ -194,7 +212,6 @@ public class Main {
                     }while(repeteLoopMenuInterno);
                 }
                 default -> {
-
                     System.out.print("\nPressione 'Enter' para aprovar um pedido: ");
                     int tamanho = Restaurante.pedidosEsperandoAprovacao.size();
                     for(int i = 0; i < tamanho ; i++){
