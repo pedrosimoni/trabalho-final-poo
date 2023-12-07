@@ -46,10 +46,15 @@ public class Main {
 
 
         TimerTask tn = new TimerTask(){
-            Pedido pedidoTimerTask;
+            Pedido pedidoTimerTask = null;
+            Garcom garconEscolhido;
+            Random rand = new Random();
             public void run(){
                 System.out.println("Eba novo pedido!");
-                pedidoTimerTask = new Pedido();
+                do{
+                    garconEscolhido = Restaurante.garcons.get(rand.nextInt(Restaurante.garcons.size()));
+                }while(garconEscolhido.getDiaFolga() == Restaurante.diaSemana);
+                pedidoTimerTask = new Pedido(garconEscolhido);
                 Restaurante.pedidosEsperandoAprovacao.add(pedidoTimerTask);
             }
         };

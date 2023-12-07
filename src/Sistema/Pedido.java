@@ -51,38 +51,6 @@ public class Pedido {
         this.dataHoraRegistro = Restaurante.dataCentral;
     }
 
-    public Pedido(){
-        Random rand = new Random();
-
-        int numPratosPrincipais = rand.nextInt(limitador_pratos_principais);
-        for(int i = 0; i < numPratosPrincipais; i++){
-            PratoPrincipal p = Restaurante.pratosPrincipais.get(rand.nextInt(Restaurante.pratosPrincipais.size()));
-            itensPedido.add(p);
-        }
-
-        int numSobremesas = rand.nextInt(limitador_sobremesas);
-        for(int i = 0; i < numSobremesas; i++){
-            Sobremesa s = Restaurante.sobremesas.get(rand.nextInt(Restaurante.sobremesas.size()));
-            itensPedido.add(s);
-        }
-
-        int numBebidas = rand.nextInt(limitador_bebidas);
-        for(int i = 0; i < numBebidas; i++){
-            Bebida b = Restaurante.bebidas.get(rand.nextInt(Restaurante.bebidas.size()));
-            itensPedido.add(b);
-        }
-
-        this.garcom = Restaurante.garcons.get(rand.nextInt(Restaurante.garcons.size()));
-
-        do{
-            this.cozinheiroPrincipal = Restaurante.cozinheiros.get(rand.nextInt(Restaurante.cozinheiros.size()));
-        }while(!this.cozinheiroPrincipal.isPratoEspecializado());
-
-        do{
-            this.cozinheiroSobremesa = Restaurante.cozinheiros.get(rand.nextInt(Restaurante.cozinheiros.size()));
-        }while(this.cozinheiroSobremesa.isPratoEspecializado());
-
-    }
 
     public void adicionaPedido(ArrayList<Item> itensPedido) throws IngredientesInsuficientes{
         for(Item i : itensPedido) {
