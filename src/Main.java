@@ -9,6 +9,7 @@ import Itens.*;
 import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
@@ -202,6 +203,7 @@ public class Main {
             System.out.println("4 - Cadastrar/remover garçom");
             System.out.println("5 - Cadastrar/remover cozinheiro");
             System.out.println("6 - Cadastrar/remover ingrediente");
+            System.out.println("Digite qualquer outra tecla para sair.");
             System.out.print("Escolha uma opção: ");
             op = sc.nextInt();
             sc.nextLine();
@@ -363,7 +365,220 @@ public class Main {
                     }
 
                 }
-                case 4 -> {}
+                case 4 -> {
+
+                    System.out.print("\nDeseja cadastrar um novo garçom(a) ou remover um garçom(r): ");
+                    String opc = sc.nextLine();
+
+                    if(opc.equals("a")){
+                        System.out.print("\nDigite o nome do novo garçom: ");
+                        String nome = sc.nextLine();
+
+                        System.out.print("\nDigite o CPF do novo garçom: ");
+                        Long cpf = sc.nextLong();
+
+                        System.out.print("\nDigite o RG do novo garçom: ");
+                        Long rg = sc.nextLong();
+                        sc.nextLine();
+
+                        System.out.print("\nDigite o Estado Civil do novo garçom: ");
+                        String estadoCivil = sc.nextLine();
+
+                        System.out.print("\nDigite o Endereço do novo garçom: ");
+                        String endereco = sc.nextLine();
+
+                        System.out.print("\nDeseja considerar hoje como a Data de Adimissão do novo garçom? (s/n)");
+                        String inputOp = sc.nextLine();
+                        if (inputOp.charAt(0) == 's' || inputOp.charAt(0) == 'S') {
+                            LocalDate dataAdimissao = Restaurante.dataCentral.toLocalDate();
+                        } else {
+                            boolean repetExcessoes = false;
+                            do {
+                                try {
+                                    System.out.print("\nDigite a Data de Adimissão (ddmmaa): ");
+                                    System.out.print("Ano: ");
+                                    int ano = sc.nextInt();
+                                    System.out.print("Mes: ");
+                                    int mes = sc.nextInt();
+                                    System.out.print("Dia: ");
+                                    int dia = sc.nextInt();
+                                    sc.nextLine();
+                                    LocalDate dataAdimissao = LocalDate.of(ano, mes, dia);
+                                } catch (DateTimeException d) {
+                                    System.out.println("Você digitou uma data inválida, por favor digite novamente");
+                                    repetExcessoes = true;
+                                }
+                            }while(repetExcessoes);
+                        }
+
+                        System.out.print("\nDigite o Número da Carteira do novo garçom: ");
+                        Long numCarteira = sc.nextLong();
+                        sc.nextLine();
+
+                        System.out.print("\nDigite o dia de folga do novo garçom: ");
+                        String diaFolga = sc.nextLine();
+
+                        System.out.print("Digite o Salário Base do novo garçom: ");
+                        Double salarioBase = sc.nextDouble();
+
+                        boolean repetExcessoes = false;
+                        Garcom g = null;
+                        do{
+                            try {
+                                g = new Garcom(nome, cpf, rg, estadoCivil, endereco, dataAdimissao, numCarteira, diaFolga, salarioBase);
+                            } catch (CPFInvalido f) {
+                                System.out.println("Você digitou um cpf errado, por favor digite novamente: ");
+                                cpf = sc.nextLong();
+                                repetExcessoes = true;
+                            }
+                        }while(repetExcessoes);
+
+                        g.calculaSalario();
+                        Restaurante.garcons.add(g);
+
+                    }else if(opc.equals("r")){
+
+                        System.out.println("\nPressione 'Enter' para não remover o garçom e 'x' para remover: ");
+
+                        for (Garcom g : Restaurante.garcons) {
+
+                            g.mostrar();
+                            String inputOp = sc.nextLine();
+                            if (inputOp.equals("x")) {
+                                Restaurante.garcons.remove(g);
+                            }
+
+                        }
+
+                    }
+
+                }
+                case 5 -> {
+
+                    System.out.print("\nDeseja cadastrar um novo cozinheiro(a) ou remover um cozinheiro(r): ");
+                    String opc = sc.nextLine();
+
+                    if(opc.equals("a")){
+
+                        System.out.print("\nDigite o nome do novo cozinheiro: ");
+                        Stirng nome = sc.nextLine();
+
+                        System.out.print("\nDigite o CPF do novo cozinheiro: ");
+                        Long cpf = sc.nextLong();
+
+                        System.out.print("\nDigite o RG do novo cozinheiro: ");
+                        Long rg = sc.nextLong();
+                        sc.nextLine();
+
+                        System.out.print("\nDigite o Estado Civil do novo cozinheiro: ");
+                        String estadoCivil = sc.nextLine();
+
+                        System.out.print("\nDigite o Endereço do novo cozinheiro: ");
+                        String endereco = sc.nextLine();
+
+                        System.out.print("\nDeseja considerar hoje como a Data de Adimissão do novo cozinheiro? (s/n)");
+                        inputOp = sc.nextLine();
+                        if (inputOp.charAt(0) == 's' || inputOp.charAt(0) == 'S') {
+                            LocalDate dataAdimissao = Restaurante.dataCentral.toLocalDate();
+                        } else {
+                            boolean repetExcessoes = false;
+                            do {
+                                try {
+                                    System.out.print("\nDigite a Data de Adimissão (ddmmaa): ");
+                                    System.out.print("Ano: ");
+                                    int ano = sc.nextInt();
+                                    System.out.print("Mes: ");
+                                    int mes = sc.nextInt();
+                                    System.out.print("Dia: ");
+                                    int dia = sc.nextInt();
+                                    sc.nextLine();
+                                    LocalDate dataAdimissao = LocalDate.of(ano, mes, dia);
+                                } catch (DateTimeException d) {
+                                    System.out.println("Você digitou uma data inválida, por favor digite novamente");
+                                    repetExcessoes = true;
+                                }
+                            }while(repetExcessoes);
+                        }
+
+                        System.out.print("\nDigite o Número da Carteira do novo cozinheiro: ");
+                        long numCarteira = sc.nextLong();
+
+                        System.out.print("\nO novo cozinheiro é especializado em Pratos Principais(1) ou Sobremesas(2)?\n ");
+                        boolean pratoEspecializado = sc.nextInt() != 2;
+
+                        Cozinheiro c = null;
+                        repetExcessoes = false;
+                        do{
+                            try {
+                                c = new Cozinheiro(nome, cpf, rg, estadoCivil, endereco, dataAdimissao, numCarteira, pratoEspecializado);
+                            } catch (CPFInvalido f) {
+                                System.out.print("Você digitou um cpf errado, por favor digite novamente: ");
+                                cpf = sc.nextLong();
+                                repetExcessoes = true;
+                            }
+                        }while(repetExcessoes);
+
+                        c.calculaSalario();
+                        Restaurante.cozinheiros.add(c);
+
+                    }else if(opc.equals("r")){
+
+                        System.out.println("\nPressione 'Enter' para não remover o cozinheiro e 'x' para remover: ");
+
+                        for (Garcom g : Restaurante.garcons) {
+
+                            g.mostrar();
+                            String inputOp = sc.nextLine();
+                            if (inputOp.equals("x")) {
+                                Restaurante.garcons.remove(g);
+                            }
+
+                        }
+
+                    }
+
+                }
+                case 6 -> {
+
+                    System.out.print("\nDeseja cadastrar um novo ingrediente(a) ou remover um ingrediente(r): ");
+                    String opc = sc.nextLine();
+
+                    if(opc.equals("a")){
+
+                        System.out.print("\nDigite o Nome do novo ingrediente: ");
+                        String nome = sc.nextLine();
+
+                        System.out.print("\nDigite quantos ingredientes devem ser cadastrados: ");
+                        int qtd = sc.nextInt();
+
+                        System.out.print("\nDigite o Preço de Custo do novo ingrediente: ");
+                        double precoCusto = sc.nextDouble();
+
+                        Ingrediente i = new Ingrediente(nome, qtd, precoCusto);
+                        Restaurante.estoque.add(i);
+
+                    }else if(opc.equals("r")){
+
+                        System.out.println("\nPressione 'Enter' para não remover o ingrediente e 'x' para remover: ");
+
+                        for (Ingrediente i : Restaurante.estoque) {
+
+                            i.mostrar();
+                            String inputOp = sc.nextLine();
+                            if (inputOp.equals("x")) {
+                                Restaurante.estoque.remove(i);
+                            }
+
+                        }
+
+                    }
+
+                }
+                default -> {
+
+                    repeteLoopMenu = false;
+                }
+
             }
         }while(repeteLoopMenu);
     }

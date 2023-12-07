@@ -34,6 +34,7 @@ public class Garcom extends Funcionario{
     public void mostrar(){
         System.out.println("Nome: " + nome);
         System.out.println("    Cargo: Garçom");
+        System.out.println("    Número da carteira: " + numCarteira);
         calculaSalario();
         System.out.println("    Salário: R$" + salario);
     }

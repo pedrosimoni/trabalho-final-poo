@@ -33,4 +33,9 @@ public class Ingrediente implements Serializable{
     public double getPrecoCusto(){
         return precoCusto;
     }
+
+    public void mostrar(){
+        System.out.println("Nome: " + nome);
+        System.out.println("    Preço custo: " + precoCusto);
+    }
 }
