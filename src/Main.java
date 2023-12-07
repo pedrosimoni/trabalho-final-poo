@@ -1,4 +1,5 @@
 import Excecoes.CPFInvalido;
+import Excecoes.SaldoInsuficiente;
 import Sistema.*;
 import Funcionarios.*;
 import Itens.*;
@@ -42,13 +43,21 @@ public class Main {
                             c.calculaSalario();
                             c.setNumPratos(0);
                         }
+                        pedidosMensais();
+                        try{
+                            Restaurante.pagarCozinheiros();
+                            Restaurante.pagarGarcons();
+                        }catch (SaldoInsuficiente f){
+                            saldoInsuficiente(f);
+                        }
+
                     }
                 }
-                Restaurante.dataCentral = Restaurante.dataCentral.plusHours(1);
+                Restaurante.dataCentral = Restaurante.dataCentral.plusMinutes(5);
                 //System.out.println("Hora atual = " + Restaurante.dataCentral.getHour());
             }
         };
-        t.scheduleAtFixedRate(tt, 0, 1000);
+        t.scheduleAtFixedRate(tt, 0, 83);
 
         /*
         TimerTask tn = new TimerTask(){
@@ -320,5 +329,104 @@ public class Main {
         } while (repeteLoopMenu);
         pers.gravaBase();
         pers.fecharArquivos();
+    }
+
+
+    private static void saldoInsuficiente(SaldoInsuficiente f){
+        Scanner sc = new Scanner(System.in);
+        System.out.println(f);
+
+        int op;
+        do{
+            System.out.println("1 -> Operar no vermelho");
+            System.out.println("2 -> Adicionar mais caixa ao restaurante");
+            System.out.println("3 -> Deixar de pagar os seus funcionários");
+            op = sc.nextInt();
+        }while(op!=1 && op!=2 && op!=3);
+        if(op == 1){
+            Divida d = new Divida("Banco",f.getValor());
+            Restaurante.dividas.add(d);
+            System.out.println("Uma nova divida foi criada, consulte pagar divida para paga-la");
+        }
+        else if(op == 2){
+            double quantidadeAdicionada;
+            do{
+                System.out.println("Digite a quantida que deseja adicionar ao restaurante");
+                quantidadeAdicionada = sc.nextDouble();
+                if(f.getValor() > quantidadeAdicionada)
+                    System.out.println("A quantidade digitada é menor do que o valor da dívida");
+            }while(f.getValor() > quantidadeAdicionada);
+            Restaurante.adicionarCaixa(quantidadeAdicionada);
+            System.out.println("Quantidade adicionada ao caixa com sucesso!");
+        }
+        else{
+            String tipo;
+            if(f.getF() == 'c')
+                tipo = "Cozinheiros";
+            else
+                tipo = "Garçons";
+            Divida d = new Divida(tipo,f.getValor());
+            Restaurante.dividas.add(d);
+            System.out.println("Uma nova divida foi criada, consulte pagar divida para paga-la");
+        }
+    }
+
+    private static void pedidosMensais(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Você deseja ver os pedidos que houveram este mês? (s/n)");
+        String in = sc.nextLine();
+        if(in.charAt(0)== 's'|| in.charAt(0)== 'S'){
+            for(Pedido o: Restaurante.pedidosMensais){
+                o.mostrar();
+            }
+        }
+        Restaurante.pedidosMensais.clear();
+        System.out.println("Pedidos mensais limpos");
+    }
+
+    private static void pagarDividas(){
+        System.out.println("Digite a dívida que você deseja pagar");
+        System.out.println("Seu caixa atual é de : " + Restaurante.caixa + "R$");
+        int op,i;
+        Scanner sc = new Scanner(System.in);
+        do{
+            for(i=0;i<Restaurante.dividas.size();i++){
+                System.out.print(i+1 + "  ");
+                Restaurante.dividas.get(i).mostarDivida();
+            }
+            System.out.println(i+2 + " Sair");
+            op = sc.nextInt();
+        }while(op<0 || op>i+2);
+        --op;
+        if(op == i+1){
+            return;
+        }else{
+            if(Restaurante.dividas.get(i).getValor() > Restaurante.caixa){
+                System.out.println("Saldo Insuficiente");
+                return;
+            }
+            Restaurante.removerCaixa(Restaurante.dividas.get(i).getValor());
+            System.out.println("Divida paga");
+        }
+
+    }
+    private static void operacoesDeCaixa(){
+        int op;
+        double qtdade;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("O que voce deseja fazer?");
+        do{
+            System.out.println("1- Adicionar um certo valor ao caixa");
+            System.out.println("2- Remover um certo valor do caixa");
+            op = sc.nextInt();
+        }while(op!=1 &&op!=2);
+        if(op == 1){
+            System.out.println("Digite a quantidade que voce deseja adicionar");
+            qtdade = sc.nextDouble();
+        }else{
+            System.out.println("Digite a quantidade que voce deseja remover");
+            qtdade = sc.nextDouble();
+        }
+        System.out.println("Quantidade registrada");
     }
 }

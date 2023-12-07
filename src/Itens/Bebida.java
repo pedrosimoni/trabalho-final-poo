@@ -6,6 +6,7 @@ import java.io.Serializable;
 public class Bebida extends Item implements PodeVender, Serializable {
     private int tamanho;
     private EmbalagensEnum tipoEmbalagem;
+    private int quantidade;
 
     public Bebida(String nome, String codigo, double precoUnitario, double precoCusto, int tamanho, String tipoEmbalagem){
         super(nome, codigo, precoUnitario, precoCusto);
@@ -18,5 +19,13 @@ public class Bebida extends Item implements PodeVender, Serializable {
         System.out.println("    " + tamanho);
         System.out.println("    " + tipoEmbalagem.toString());
         System.out.println("    R$" + precoUnitario);
+    }
+
+    public void venda(){
+        if(quantidade == 0){
+            //throw new IngredientesInsuficientes("Bebida " + nome + "insuficiente! Deseja comprar mais?(y/n)");
+        }else{
+            quantidade--;
+        }
     }
 }

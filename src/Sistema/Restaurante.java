@@ -1,5 +1,6 @@
 package Sistema;
 
+import Excecoes.SaldoInsuficiente;
 import Funcionarios.*;
 import Itens.*;
 import Enums.*;
@@ -19,7 +20,8 @@ public class Restaurante {
         public static ArrayList<Ingrediente> estoque = new ArrayList<Ingrediente>();
         public static ArrayList<Pedido> pedidosMensais = new ArrayList<Pedido>();
         public static Stack<Pedido> pedidosEsperandoAprovacao = new Stack<Pedido>();
-        public static double caixa;
+        public static ArrayList<Divida> dividas = new ArrayList<Divida>();
+        public static double caixa = 500000;
         public static LocalDateTime dataCentral = LocalDateTime.now();
         public static DiasEnum diaSemana = DiasEnum.SEGUNDA;
 
@@ -57,6 +59,9 @@ public class Restaurante {
         public static void adicionarCaixa(double venda){
             caixa += venda;
         }
+        public static void removerCaixa(double venda){
+        caixa -= venda;
+    }
 
         public static void  setDiaSemana(){
             DayOfWeek day= dataCentral.getDayOfWeek();
@@ -69,5 +74,32 @@ public class Restaurante {
                 case SATURDAY -> diaSemana = DiasEnum.SABADO;
                 case SUNDAY -> diaSemana = DiasEnum.DOMINGO;
             }
-    }
+        }
+
+        public static void pagarCozinheiros() throws SaldoInsuficiente {
+            double p=0;
+            for(Cozinheiro o: cozinheiros){
+                p+= o.calculaSalario();
+            }
+            if(p > caixa){
+                throw new SaldoInsuficiente("Cozinheiros",'c',p);
+            }
+            for(Cozinheiro o: cozinheiros){
+                System.out.println("Cozinheiro "+ o.getNome() + " pago");
+                removerCaixa(o.calculaSalario());
+            }
+        }
+        public static void pagarGarcons() throws SaldoInsuficiente{
+            double p=0;
+            for(Garcom o: garcons){
+                p+= o.calculaSalario();
+            }
+            if(p > caixa){
+                throw new SaldoInsuficiente("Garçon",'g',p);
+            }
+            for(Cozinheiro o: cozinheiros){
+                System.out.println("Garçon "+ o.getNome() + " pago");
+                removerCaixa(o.calculaSalario());
+            }
+        }
 }
