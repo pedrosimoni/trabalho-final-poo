@@ -70,7 +70,8 @@ public class Main {
             System.out.println(" 3  -  Adicionar itens a um pedido");
             System.out.println(" 4  -  Cadastrar/Remover itens");
             System.out.println(" 5  -  Conferir restaurante");
-            System.out.println(" 6  -  Sair");
+            System.out.println(" 6  -  Operações financeiras");
+            System.out.println(" 7  -  Sair");
             System.out.print("Escolha uma opção: ");
             op = sc.nextInt();
             sc.nextLine();
@@ -162,8 +163,35 @@ public class Main {
 
                 case 6 -> {
 
-                    repeteLoopMenu = false;
 
+                    boolean repeteLoopMenuInterno = true;
+                    do {
+
+                        int opi;
+
+                        System.out.println("1 - Pagar dívidas");
+                        System.out.println("2 - Ver o balanço mensal");
+                        System.out.println("3 - Operações de caixa");
+                        System.out.println("Digite qualquer outra tecla para sair.");
+                        System.out.print("Escolha uma opção: ");
+                        opi = sc.nextInt();
+                        sc.nextLine();
+
+                        switch (opi) {
+                            case 1 -> {
+                                pagarDividas();
+                            }
+                            case 2 -> {
+                                    balnçoMensal();
+                            }
+                            case 3 -> {
+                                operacoesDeCaixa();
+                            }
+                            default -> {
+                                repeteLoopMenuInterno = false;
+                            }
+                        }
+                    }while(repeteLoopMenuInterno);
                 }
                 default -> {
 
