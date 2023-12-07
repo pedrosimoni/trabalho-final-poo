@@ -1,6 +1,3 @@
-import Enums.DiasEnum;
-import Enums.EmbalagensEnum;
-import Enums.FormaPagamentoEnum;
 import Excecoes.CPFInvalido;
 import Excecoes.SaldoInsuficiente;
 import Excecoes.IngredientesInsuficientes;
@@ -9,11 +6,7 @@ import Funcionarios.*;
 import Itens.*;
 
 import java.time.DateTimeException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
@@ -203,7 +196,7 @@ public class Main {
                                 pagarDividas();
                             }
                             case 2 -> {
-                                balnçoMensal();
+                                balncoMensal();
                             }
                             case 3 -> {
                                 operacoesDeCaixa();
@@ -213,6 +206,9 @@ public class Main {
                             }
                         }
                     }while(repeteLoopMenuInterno);
+                }
+                case 9 -> {
+                    repeteLoopMenu = false;
                 }
                 default -> {
 
@@ -785,7 +781,7 @@ public class Main {
 
     }
 
-    private static void balnçoMensal(){
+    private static void balncoMensal(){
         if(Restaurante.balancoMensal){
             for (Garcom g : Restaurante.garcons) {
                 g.calculaSalario();
