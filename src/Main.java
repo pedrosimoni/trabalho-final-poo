@@ -21,6 +21,7 @@ public class Main {
         Timer t = new Timer();
         Persistencia pers = new Persistencia();
         pers.leBase();
+
         TimerTask tt = new TimerTask() {
             public void run() {
                 if(Restaurante.dataCentral.getHour() == 0){
@@ -47,14 +48,17 @@ public class Main {
         };
         t.scheduleAtFixedRate(tt, 0, 83);
 
-        /*
+
         TimerTask tn = new TimerTask(){
+            Pedido pedidoTimerTask;
             public void run(){
                 System.out.println("Eba novo pedido!");
+                pedidoTimerTask = new Pedido();
+                Restaurante.pedidosAbertos.add(pedidoTimerTask);
             }
         };
-        t.scheduleAtFixedRate(tn, 1000, 1000);
-        */
+        t.scheduleAtFixedRate(tn, 0, 60000);
+
 
         boolean repeteLoopMenu = true;
         System.out.println("Bem vindo ao sistema!");
@@ -586,7 +590,7 @@ public class Main {
 
     public static void conferir(){
         boolean repeteLoopMenu = true;
-        do{
+        do {
 
             int op;
             Scanner sc = new Scanner(System.in);
@@ -600,10 +604,11 @@ public class Main {
             op = sc.nextInt();
             sc.nextLine();
 
-            switch(op) {
+            switch (op) {
 
             }
-
+        }while(false);
+    }
 
     private static void saldoInsuficiente(SaldoInsuficiente f){
         Scanner sc = new Scanner(System.in);
@@ -679,6 +684,7 @@ public class Main {
                 return;
             }
             Restaurante.removerCaixa(Restaurante.dividas.get(i).getValor());
+            Restaurante.dividas.remove(i);
             System.out.println("Divida paga");
         }
 
