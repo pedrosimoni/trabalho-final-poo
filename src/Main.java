@@ -777,9 +777,11 @@ public class Main {
         if(op == 1){
             System.out.println("Digite a quantidade que voce deseja adicionar");
             qtdade = sc.nextDouble();
+            Restaurante.adicionarCaixa(qtdade);
         }else{
             System.out.println("Digite a quantidade que voce deseja remover");
             qtdade = sc.nextDouble();
+            Restaurante.removerCaixa(qtdade);
         }
         System.out.println("Quantidade registrada");
 
