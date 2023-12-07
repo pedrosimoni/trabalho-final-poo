@@ -57,7 +57,7 @@ public class Main {
             public void run(){
                 System.out.println("Eba novo pedido!");
                 pedidoTimerTask = new Pedido();
-                Restaurante.pedidosAbertos.add(pedidoTimerTask);
+                Restaurante.pedidosEsperandoAprovacao.add(pedidoTimerTask);
             }
         };
         t.scheduleAtFixedRate(tn, 0, 60000);
