@@ -7,7 +7,8 @@ import Enums.*;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Restaurante {
         public static ArrayList<Garcom> garcons = new ArrayList<Garcom>();
@@ -18,7 +19,7 @@ public class Restaurante {
         public static ArrayList<Ingrediente> estoque = new ArrayList<Ingrediente>();
         public static ArrayList<Pedido> pedidosMensais = new ArrayList<Pedido>();
         public static ArrayList<Pedido> pedidosAbertos = new ArrayList<Pedido>();
-        public static Stack<Pedido> pedidosEsperandoAprovacao = new Stack<Pedido>();
+        public static Queue<Pedido> pedidosEsperandoAprovacao = new LinkedList<Pedido>();
         public static ArrayList<Divida> dividas = new ArrayList<Divida>();
         public static double caixa = 500000;
         public static LocalDateTime dataCentral = LocalDateTime.now();

@@ -17,7 +17,6 @@ public class Main {
             public void run() {
                 if(Restaurante.dataCentral.getHour() == 0){
                     Restaurante.setDiaSemana();
-                    //System.out.println("Hoje é dia " + Restaurante.dataCentral.getDayOfMonth() + ", " + Restaurante.diaSemana.toString());
                     if (Restaurante.dataCentral.getDayOfMonth() == Restaurante.dataCentral.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth()) {
                         System.out.println("Fim de mês!!");
 
@@ -34,7 +33,6 @@ public class Main {
                     }
                 }
                 Restaurante.dataCentral = Restaurante.dataCentral.plusMinutes(5);
-                //System.out.println("Hora atual = " + Restaurante.dataCentral.getHour());
             }
         };
         t.scheduleAtFixedRate(tt, 0, 83);
@@ -216,7 +214,7 @@ public class Main {
                     System.out.print("\nPressione 'Enter' para aprovar um pedido: ");
                     int tamanho = Restaurante.pedidosEsperandoAprovacao.size();
                     for(int i = 0; i < tamanho ; i++){
-                        Pedido p = Restaurante.pedidosEsperandoAprovacao.pop();
+                        Pedido p = Restaurante.pedidosEsperandoAprovacao.poll();
                         p.mostrarSimples();
                         if(sc.nextLine().equals("x")){
                             try{
