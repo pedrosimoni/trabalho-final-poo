@@ -1,6 +1,6 @@
 package Sistema;
-import Excecoes.CPFInvalido;
 
+import Excecoes.CPFInvalido;
 import static java.lang.Math.toIntExact;
 
 public abstract class ValidadorCPF {

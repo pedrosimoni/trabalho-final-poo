@@ -1,6 +1,6 @@
 package Itens;
-import Excecoes.IngredientesInsuficientes;
 
+import Excecoes.IngredientesInsuficientes;
 import java.io.*;
 
 public class Ingrediente implements Serializable{

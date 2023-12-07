@@ -4,9 +4,7 @@ import Excecoes.SaldoInsuficiente;
 import Funcionarios.*;
 import Itens.*;
 import Enums.*;
-
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Stack;

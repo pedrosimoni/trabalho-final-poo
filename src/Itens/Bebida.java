@@ -1,5 +1,6 @@
 package Itens;
 import Enums.EmbalagensEnum;
+import Sistema.Restaurante;
 
 import java.io.Serializable;
 
@@ -22,10 +23,6 @@ public class Bebida extends Item implements PodeVender, Serializable {
     }
 
     public void venda(){
-        if(quantidade == 0){
-            //throw new IngredientesInsuficientes("Bebida " + nome + "insuficiente! Deseja comprar mais?(y/n)");
-        }else{
-            quantidade--;
-        }
+        Restaurante.adicionarCaixa(precoUnitario - precoCusto);
     }
 }

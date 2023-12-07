@@ -1,15 +1,10 @@
-import Excecoes.CPFInvalido;
-import Excecoes.SaldoInsuficiente;
-import Excecoes.IngredientesInsuficientes;
+import Excecoes.*;
 import Sistema.*;
 import Funcionarios.*;
 import Itens.*;
-
-import java.time.DateTimeException;
-import java.time.LocalDate;
+import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
-
 import static Enums.FormaPagamentoEnum.*;
 
 
@@ -48,8 +43,14 @@ public class Main {
         TimerTask tn = new TimerTask(){
             Pedido pedidoTimerTask;
             public void run(){
-                System.out.println("Eba novo pedido!");
-                pedidoTimerTask = new Pedido();
+                Random rand = new Random();
+                Garcom g = Restaurante.garcons.get(rand.nextInt(Restaurante.garcons.size()));
+
+                while(g.getDiaFolga() == Restaurante.diaSemana){
+                    g = Restaurante.garcons.get(rand.nextInt(Restaurante.garcons.size()));
+                }
+
+                pedidoTimerTask = new Pedido(g);
                 Restaurante.pedidosEsperandoAprovacao.add(pedidoTimerTask);
             }
         };
@@ -769,7 +770,7 @@ public class Main {
             System.out.println("1- Adicionar um certo valor ao caixa");
             System.out.println("2- Remover um certo valor do caixa");
             op = sc.nextInt();
-        }while(op!=1 &&op!=2);
+        }while(op!=1 && op!=2);
         if(op == 1){
             System.out.println("Digite a quantidade que voce deseja adicionar");
             qtdade = sc.nextDouble();

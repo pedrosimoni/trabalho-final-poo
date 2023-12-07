@@ -1,7 +1,5 @@
 package Sistema;
 
-import java.time.LocalDateTime;
-
 public class Divida {
     private String tipo;
     private double valor;
