@@ -173,10 +173,9 @@ public class Main {
                         Pedido p = Restaurante.pedidosEsperandoAprovacao.pop();
                         p.mostrarSimples();
                         if(sc.nextLine().equals("x")){
-                            listaItens.clear();
-                            listaItens = geraListaItens();
                             try{
-                                p.adicionaPedido(listaItens);
+                                p.geraPedido();
+                                p.venda();
                                 Restaurante.pedidosAbertos.add(p);
                             }catch (IngredientesInsuficientes ii){
                                 System.out.print("\nPedido não aprovado!");
@@ -190,7 +189,7 @@ public class Main {
         pers.fecharArquivos();
     }
 
-    public static void cadastrarXremover(){
+    private static void cadastrarXremover(){
         boolean repeteLoopMenu = true;
         do{
 
@@ -389,8 +388,9 @@ public class Main {
 
                         System.out.print("\nDeseja considerar hoje como a Data de Adimissão do novo garçom? (s/n)");
                         String inputOp = sc.nextLine();
+                        LocalDate dataAdmissao = null;
                         if (inputOp.charAt(0) == 's' || inputOp.charAt(0) == 'S') {
-                            LocalDate dataAdimissao = Restaurante.dataCentral.toLocalDate();
+                            dataAdmissao = Restaurante.dataCentral.toLocalDate();
                         } else {
                             boolean repetExcessoes = false;
                             do {
@@ -403,7 +403,7 @@ public class Main {
                                     System.out.print("Dia: ");
                                     int dia = sc.nextInt();
                                     sc.nextLine();
-                                    LocalDate dataAdimissao = LocalDate.of(ano, mes, dia);
+                                    dataAdmissao = LocalDate.of(ano, mes, dia);
                                 } catch (DateTimeException d) {
                                     System.out.println("Você digitou uma data inválida, por favor digite novamente");
                                     repetExcessoes = true;
@@ -425,7 +425,7 @@ public class Main {
                         Garcom g = null;
                         do{
                             try {
-                                g = new Garcom(nome, cpf, rg, estadoCivil, endereco, dataAdimissao, numCarteira, diaFolga, salarioBase);
+                                g = new Garcom(nome, cpf, rg, estadoCivil, endereco, dataAdmissao, numCarteira, diaFolga, salarioBase);
                             } catch (CPFInvalido f) {
                                 System.out.println("Você digitou um cpf errado, por favor digite novamente: ");
                                 cpf = sc.nextLong();
@@ -461,7 +461,7 @@ public class Main {
                     if(opc.equals("a")){
 
                         System.out.print("\nDigite o nome do novo cozinheiro: ");
-                        Stirng nome = sc.nextLine();
+                        String nome = sc.nextLine();
 
                         System.out.print("\nDigite o CPF do novo cozinheiro: ");
                         Long cpf = sc.nextLong();
@@ -477,9 +477,10 @@ public class Main {
                         String endereco = sc.nextLine();
 
                         System.out.print("\nDeseja considerar hoje como a Data de Adimissão do novo cozinheiro? (s/n)");
-                        inputOp = sc.nextLine();
+                        String inputOp = sc.nextLine();
+                        LocalDate dataAdmissao = null;
                         if (inputOp.charAt(0) == 's' || inputOp.charAt(0) == 'S') {
-                            LocalDate dataAdimissao = Restaurante.dataCentral.toLocalDate();
+                            dataAdmissao = Restaurante.dataCentral.toLocalDate();
                         } else {
                             boolean repetExcessoes = false;
                             do {
@@ -492,7 +493,7 @@ public class Main {
                                     System.out.print("Dia: ");
                                     int dia = sc.nextInt();
                                     sc.nextLine();
-                                    LocalDate dataAdimissao = LocalDate.of(ano, mes, dia);
+                                    dataAdmissao = LocalDate.of(ano, mes, dia);
                                 } catch (DateTimeException d) {
                                     System.out.println("Você digitou uma data inválida, por favor digite novamente");
                                     repetExcessoes = true;
@@ -507,10 +508,10 @@ public class Main {
                         boolean pratoEspecializado = sc.nextInt() != 2;
 
                         Cozinheiro c = null;
-                        repetExcessoes = false;
+                        boolean repetExcessoes = false;
                         do{
                             try {
-                                c = new Cozinheiro(nome, cpf, rg, estadoCivil, endereco, dataAdimissao, numCarteira, pratoEspecializado);
+                                c = new Cozinheiro(nome, cpf, rg, estadoCivil, endereco, dataAdmissao, numCarteira, pratoEspecializado);
                             } catch (CPFInvalido f) {
                                 System.out.print("Você digitou um cpf errado, por favor digite novamente: ");
                                 cpf = sc.nextLong();
@@ -666,7 +667,9 @@ public class Main {
         }
 
     }
+
     private static void operacoesDeCaixa(){
+
         int op;
         double qtdade;
         Scanner sc = new Scanner(System.in);
@@ -684,6 +687,7 @@ public class Main {
             qtdade = sc.nextDouble();
         }
         System.out.println("Quantidade registrada");
+
     }
 
     private static void balnçoMensal(){
@@ -708,5 +712,6 @@ public class Main {
             System.out.println("Você não possui nenhum balanço mensal disponível");
         }
     }
+
 
 }

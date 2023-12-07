@@ -148,6 +148,12 @@ public class Pedido {
         cozinheiroSobremesa = Restaurante.cozinheiros.get(sc.nextInt() + j+1);
     }
 
+    public void venda() throws IngredientesInsuficientes{
+        for(Item i : itensPedido){
+            i.venda();
+        }
+    }
+
     public int getMesa(){
         return mesa;
     }
