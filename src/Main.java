@@ -1,5 +1,7 @@
+import Enums.EmbalagensEnum;
 import Excecoes.CPFInvalido;
 import Excecoes.SaldoInsuficiente;
+import Excecoes.IngredientesInsuficientes;
 import Sistema.*;
 import Funcionarios.*;
 import Itens.*;
@@ -25,6 +27,7 @@ public class Main {
                     //System.out.println("Hoje é dia " + Restaurante.dataCentral.getDayOfMonth() + ", " + Restaurante.diaSemana.toString());
                     if (Restaurante.dataCentral.getDayOfMonth() == Restaurante.dataCentral.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth()) {
                         System.out.println("Fim de mês!!");
+
                         if (Garcom.numPedidos > Garcom.metaPedidos) {
                             Garcom.bateuMeta = true;
                             System.out.println("Os garçons bateram a meta de pedidos feitos esse mês!!");
@@ -51,269 +54,322 @@ public class Main {
         };
         t.scheduleAtFixedRate(tn, 1000, 1000);
         */
-        int op, tamanho, qtd,ano,mes,dia;
-        Scanner sc = new Scanner(System.in);
-        String nome, codigo, descricao, tempoPreparo, estadoCivil, endereco, diaFolga, tipoEmbalagem,inputOp;
-        double precoUnitario, salarioBase, calorias, precoCusto;
-        ArrayList<Ingrediente> lista = new ArrayList<Ingrediente>();
-        long cpf, rg, numCarteira;
-        boolean pratoEspecializado,repeteLoopMenu = true,repetExcessoes;
-        LocalDate dataAdimissão;
 
+        boolean repeteLoopMenu = true;
         System.out.println("Bem vindo ao sistema!");
         do {
-            System.out.println("1 -  Cadastrar novo prato principal                                 (R$" + Restaurante.caixa + ") Caixa");
-            System.out.println("2 -  Cadastrar nova sobremesa                                       (" + Restaurante.pedidosEsperandoAprovacao.size() + ") Pedidos");
-            System.out.println("3 -  Cadastrar novo garçom");
-            System.out.println("4 -  Cadastrar novo cozinheiro");
-            System.out.println("5 -  Cadastrar nova bebida");
-            System.out.println("6 -  Cadastrar novo ingrediente");
-            System.out.println("7 -  Fazer Compras");
-            System.out.println("8 -  Olhar estoque de ingredientes");
-            System.out.println("9 -  Olhar cardápio");
-            System.out.println("10 - Ver histórico de pedidos do mês");
-            System.out.println("11 - Calcular e mostrar salários dos funcionários");
-            // consultarOBalançoMensal pagarDividas fazerOperaçõesDeCaixa
-            System.out.println("12 - Sair");
+
+            int op;
+            Scanner sc = new Scanner(System.in);
+            ArrayList<Item> listaItens = new ArrayList<Item>();
+
+            System.out.println("N/A -  Aprovar pedidos                               (R$" + Restaurante.caixa + ") Caixa");
+            System.out.println(" 1  -  Fazer compras                                 (" + Restaurante.pedidosEsperandoAprovacao.size() + ") Pedidos");
+            System.out.println(" 2  -  Adicionar pedido manualmente");
+            System.out.println(" 3  -  Adicionar itens a um pedido");
+            System.out.println(" 4  -  Cadastrar/Remover itens");
+            System.out.println(" 5  -  Conferir restaurante");
+            System.out.println(" 6  -  Sair");
             System.out.print("Escolha uma opção: ");
             op = sc.nextInt();
             sc.nextLine();
 
             switch (op) {
                 case 1 -> {
-                    System.out.print("\nDigite o nome de prato: ");
-                    nome = sc.nextLine();
-                    System.out.print("\nDigite o código do prato: ");
-                    codigo = sc.nextLine();
-                    System.out.print("\nDigite a descricao do prato: ");
-                    descricao = sc.nextLine();
-                    System.out.print("\nDigite o tempo de preparo do prato(hh:mm): ");
-                    tempoPreparo = sc.nextLine();
-                    System.out.print("\nDigite o precoUnitario do prato: ");
-                    precoUnitario = sc.nextFloat();
-                    sc.nextLine();
-                    System.out.println("\nEscolha os ingredientes do prato: ");
-                    for (Ingrediente i : Restaurante.estoque) {
-                        System.out.printf(i.getNome() + "(s/n)");
-                        inputOp = sc.nextLine();
-                        if (inputOp.charAt(0) == 's' || inputOp.charAt(0) == 'S') {
-                            lista.add(i);
-                        }
-                    }
-                    PratoPrincipal p = new PratoPrincipal(nome, codigo, precoUnitario, lista, descricao, tempoPreparo);
-                    p.calculaPrecoCusto();
-                    lista.clear();
-                    Restaurante.pratosPrincipais.add(p);
-                }
-                case 2 -> {
-                    System.out.print("\nDigite o nome da sobremesa: ");
-                    nome = sc.nextLine();
-                    System.out.print("\nDigite o código da sobremesa: ");
-                    codigo = sc.nextLine();
-                    System.out.print("\nDigite a descricao da sobremesa: ");
-                    descricao = sc.nextLine();
-                    System.out.print("\nDigite o tempo de preparo da sobremesa(hh:mm): ");
-                    tempoPreparo = sc.nextLine();
-                    System.out.print("\nDigite o precoUnitario da sobremesa: ");
-                    precoUnitario = sc.nextFloat();
-                    sc.nextLine();
-                    System.out.println("\nEscolha os ingredientes da sobremesa: ");
-                    for (Ingrediente i : Restaurante.estoque) {
-                        System.out.printf(i.getNome() + "(s/n)");
-                        inputOp = sc.nextLine();
-                        if (inputOp.charAt(0) == 's' || inputOp.charAt(0) == 'S') {
-                            lista.add(i);
-                        }
-                    }
-                    System.out.print("\nDigite a quantidade de calorias na sobremesa: ");
-                    calorias = sc.nextFloat();
-                    Sobremesa s = new Sobremesa(nome, codigo, precoUnitario, lista, descricao, tempoPreparo, calorias);
-                    s.calculaPrecoCusto();
-                    lista.clear();
-                    Restaurante.sobremesas.add(s);
-                }
-                case 3 -> {
-                    System.out.print("\nDigite o nome do novo garçom: ");
-                    nome = sc.nextLine();
-                    System.out.print("\nDigite o CPF do novo garçom: ");
-                    cpf = sc.nextLong();
-                    System.out.print("\nDigite o RG do novo garçom: ");
-                    rg = sc.nextLong();
-                    sc.nextLine();
-                    System.out.print("\nDigite o Estado Civil do novo garçom: ");
-                    estadoCivil = sc.nextLine();
-                    System.out.print("\nDigite o Endereço do novo garçom: ");
-                    endereco = sc.nextLine();
-                    System.out.print("\nDeseja considerar hoje como a Aata de Adimissão do novo garçom? (s/n)");
-                    inputOp = sc.nextLine();
-                    if (inputOp.charAt(0) == 's' || inputOp.charAt(0) == 'S') {
-                        dataAdimissão = Restaurante.dataCentral.toLocalDate();
-                    } else {
-                        dataAdimissão = null;
-                        do {
-                            repetExcessoes = false;
-                            try {
-                                System.out.print("\nDigite a Data de Adimissão (ddmmaa): ");
-                                System.out.print("Ano: ");
-                                ano = sc.nextInt();
-                                System.out.print("Mes: ");
-                                mes = sc.nextInt();
-                                System.out.print("Dia: ");
-                                dia = sc.nextInt();
-                                sc.nextLine();
-                                dataAdimissão = LocalDate.of(ano, mes, dia);
-                            } catch (DateTimeException d) {
-                                System.out.println("Você digitou uma data inválida, por favor digite novamente");
-                                repetExcessoes = true;
-                            }
-                        }while(repetExcessoes);
-                    }
-                    System.out.print("\nDigite o Número da Carteira do novo garçom: ");
-                    numCarteira = sc.nextLong();
-                    sc.nextLine();
-                    System.out.print("\nDigite o dia de folga do novo garçom: ");
-                    diaFolga = sc.nextLine();
-                    System.out.print("Digite o Salário Base do novo garçom: ");
-                    salarioBase = sc.nextFloat();
-                    Garcom g = null;
-                    do{
-                        repetExcessoes = false;
-                        try {
-                            g = new Garcom(nome, cpf, rg, estadoCivil, endereco, dataAdimissão, numCarteira, diaFolga, salarioBase);
-                        } catch (CPFInvalido f) {
-                            System.out.println("Você digitou um cpf errado, por favor digite novamente: ");
-                            cpf = sc.nextLong();
-                            repetExcessoes = true;
-                        }
-                    }while(repetExcessoes);
 
-                    g.calculaSalario();
-                    Restaurante.garcons.add(g);
-                }
-                case 4 -> {
-                    System.out.print("\nDigite o nome do novo cozinheiro: ");
-                    nome = sc.nextLine();
-                    System.out.print("\nDigite o CPF do novo cozinheiro: ");
-                    cpf = sc.nextLong();
-                    System.out.print("\nDigite o RG do novo cozinheiro: ");
-                    rg = sc.nextLong();
-                    sc.nextLine();
-                    System.out.print("\nDigite o Estado Civil do novo cozinheiro: ");
-                    estadoCivil = sc.nextLine();
-                    System.out.print("\nDigite o Endereço do novo cozinheiro: ");
-                    endereco = sc.nextLine();
-                    System.out.print("\nDeseja considerar hoje como a Aata de Adimissão do novo cozinheiro? (s/n)");
-                    inputOp = sc.nextLine();
-                    if (inputOp.charAt(0) == 's' || inputOp.charAt(0) == 'S') {
-                        dataAdimissão = Restaurante.dataCentral.toLocalDate();
-                    } else {
-                        dataAdimissão = null;
-                        do {
-                            repetExcessoes = false;
-                            try {
-                                System.out.print("\nDigite a Data de Adimissão (ddmmaa): ");
-                                System.out.print("Ano: ");
-                                ano = sc.nextInt();
-                                System.out.print("Mes: ");
-                                mes = sc.nextInt();
-                                System.out.print("Dia: ");
-                                dia = sc.nextInt();
-                                sc.nextLine();
-                                dataAdimissão = LocalDate.of(ano, mes, dia);
-                            } catch (DateTimeException d) {
-                                System.out.println("Você digitou uma data inválida, por favor digite novamente");
-                                repetExcessoes = true;
-                            }
-                        }while(repetExcessoes);
-
-                    }
-                    System.out.print("\nDigite o Número da Carteira do novo cozinheiro: ");
-                    numCarteira = sc.nextLong();
-                    System.out.print("\nO novo cozinheiro é especializado em Pratos Principais(1) ou Sobremesas(2)?\n ");
-                    pratoEspecializado = sc.nextInt() != 2;
-                    Cozinheiro c = null;
-                    do{
-                        repetExcessoes = false;
-                        try {
-                            c = new Cozinheiro(nome, cpf, rg, estadoCivil, endereco, dataAdimissão, numCarteira, pratoEspecializado);
-                        } catch (CPFInvalido f) {
-                            System.out.print("Você digitou um cpf errado, por favor digite novamente: ");
-                            cpf = sc.nextLong();
-                            repetExcessoes = true;
-                        }
-                    }while(repetExcessoes);
-
-                    c.calculaSalario();
-                    Restaurante.cozinheiros.add(c);
-                }
-                case 5 -> {
-                    System.out.print("\nDigite o Nome da nova bebida: ");
-                    nome = sc.nextLine();
-                    System.out.print("\nDigite o Codigo da nova bebida: ");
-                    codigo = sc.nextLine();
-                    System.out.print("\nDigite o Preço da nova bebida: ");
-                    precoUnitario = sc.nextDouble();
-                    System.out.print("\nDigite o Preço de Custo da nova bebida: ");
-                    precoCusto = sc.nextDouble();
-                    System.out.print("\nDigite o Tamanho da nova bebida: ");
-                    tamanho = sc.nextInt();
-                    System.out.print("\nQual o tipo de Embalagem da nova bebida: ");
-                    System.out.print("\nLata(1)\nGarrafa Plástica(2)\nGarrafa de Vidro(3)\nRefil(4)\n:->");
-                    switch (sc.nextInt()) {
-                        default -> tipoEmbalagem = "LATA";
-                        case 2 -> tipoEmbalagem = "GARRAFA_PLASTICA";
-                        case 3 -> tipoEmbalagem = "GARRAFA_VIDRO";
-                        case 4 -> tipoEmbalagem = "COPO_REFIL";
-                    }
-                    Bebida b = new Bebida(nome, codigo, precoUnitario, precoCusto, tamanho, tipoEmbalagem);
-                    Restaurante.bebidas.add(b);
-                }
-                case 6 -> {
-                    System.out.print("\nDigite o Nome do novo ingrediente: ");
-                    nome = sc.nextLine();
-                    System.out.print("\nDigite quantos ingredientes devem ser cadastrados: ");
-                    qtd = sc.nextInt();
-                    System.out.print("\nDigite o Preço de Custo do novo ingrediente: ");
-                    precoCusto = sc.nextDouble();
-                    Ingrediente i = new Ingrediente(nome, qtd, precoCusto);
-                    Restaurante.estoque.add(i);
-                }
-                case 7 -> {
                     System.out.print("\nPressione 'Enter' para não comprar e a quantidade desejada para comprar: \n");
                     for (Ingrediente in : Restaurante.estoque) {
                         System.out.print("\n" + in.getNome() + ": ");
                         in.compra(sc.nextInt());
                     }
-                    System.out.print("\nObrigado por comprar!\n");
+                    System.out.print("\nObrigado por comprar!");
+
                 }
-                case 8 -> {
-                    for (Ingrediente in : Restaurante.estoque) {
-                        System.out.print("\n" + in.getNome());
+                case 2 -> {
+
+                    System.out.print("\nPressione 'x' para adicionar o prato: \n");
+                    listaItens.clear();
+                    for (PratoPrincipal p : Restaurante.pratosPrincipais){
+                        System.out.print("\n - " + p.getNome() + ": ");
+                        if(sc.nextLine().equals("x")){
+                            listaItens.add(p);
+                        }
                     }
-                    System.out.println();
-                }
-                case 9 -> {
 
-                    Restaurante.menu();
-
-                }
-                case 10 -> {
-                    for (Pedido pn : Restaurante.pedidosMensais) {
-                        pn.mostrar();
+                    System.out.print("\nAgora escolha o garçom: ");
+                    Garcom gt = null;
+                    for(Garcom g : Restaurante.garcons) {
+                        if (g.getDiaFolga() != Restaurante.diaSemana) {
+                            System.out.print("\n - " + g.getNome() + ": ");
+                            if (sc.nextLine().equals("x")) {
+                                gt = g;
+                                break;
+                            }
+                        }
                     }
-                }
-                case 11 -> {
+                    if(gt == null) break;
 
-                    Restaurante.mostrarCozinheiros();
-                    Restaurante.mostrarGarcons();
+                    System.out.print("\nDigite a mesa do pedido: ");
+                    int mesa = sc.nextInt();
+                    while(mesa > Restaurante.mesaMAX){
+                        System.out.println("Digite uma mesa entre 1 e " + Restaurante.mesaMAX + ": ");
+                        mesa = sc.nextInt();
+                    }
+
+                    try{
+                        Pedido p = new Pedido(listaItens, gt, mesa);
+                        Restaurante.pedidosAbertos.add(p);
+                    }catch (IngredientesInsuficientes i){
+                        System.out.print("\nPedido não efetuado!");
+                    }
+
                 }
-                case 12->{
+                case 3 -> {
+
+                    System.out.print("\nPressione 'x' para escolher um pedido: ");
+                    for(Pedido p : Restaurante.pedidosAbertos){
+                        System.out.print("\n- Mesa " + p.getMesa() + ": ");
+                        if(sc.nextLine().equals("x")){
+                            System.out.print("\nPressione 'x' para adicionar o prato: \n");
+                            listaItens.clear();
+                            for (PratoPrincipal pn : Restaurante.pratosPrincipais){
+                                System.out.print("\n - " + pn.getNome() + ": ");
+                                if(sc.nextLine().equals("x")){
+                                    listaItens.add(pn);
+                                }
+                            }
+
+                            try{
+                                p.adicionaPedido(listaItens);
+                            }catch (IngredientesInsuficientes i){
+                                System.out.print("\nMudança não efetuada!");
+                            }
+                        }
+                    }
+
+                }
+                case 4 -> {
+
+                    cadastrarXremover();
+
+                }
+                case 5 -> {
+
+                    conferir();
+
+                }
+
+                case 6 -> {
+
                     repeteLoopMenu = false;
+
+                }
+                default -> {
+
+                    System.out.print("\nPressione 'Enter' para aprovar um pedido: ");
+                    int tamanho = Restaurante.pedidosEsperandoAprovacao.size();
+                    for(int i = 0; i < tamanho ; i++){
+                        Pedido p = Restaurante.pedidosEsperandoAprovacao.pop();
+                        p.mostrarSimples();
+                        if(sc.nextLine().equals("x")){
+                            listaItens.clear();
+                            listaItens = geraListaItens();
+                            try{
+                                p.adicionaPedido(listaItens);
+                                Restaurante.pedidosAbertos.add(p);
+                            }catch (IngredientesInsuficientes ii){
+                                System.out.print("\nPedido não aprovado!");
+                            }
+                        }
+                    }
                 }
             }
         } while (repeteLoopMenu);
         pers.gravaBase();
         pers.fecharArquivos();
+    }
+
+    public static void cadastrarXremover(){
+        boolean repeteLoopMenu = true;
+        do{
+
+            int op;
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("1 - Adicionar/remover prato principal");
+            System.out.println("2 - Adicionar/remover sobremesa");
+            System.out.println("3 - Adicionar/remover bebida");
+            System.out.println("4 - Cadastrar/remover garçom");
+            System.out.println("5 - Cadastrar/remover cozinheiro");
+            System.out.println("6 - Cadastrar/remover ingrediente");
+            System.out.print("Escolha uma opção: ");
+            op = sc.nextInt();
+            sc.nextLine();
+
+            switch(op) {
+                case 1 -> {
+                    System.out.print("\nDeseja adicionar um prato(a) ou remover um prato(r): ");
+                    String opc = sc.nextLine();
+                    ArrayList<Ingrediente> listaIngredientes = new ArrayList<Ingrediente>();
+
+                    if (opc.equals("a")) {
+
+                        System.out.print("\nDigite o nome de prato: ");
+                        String nome = sc.nextLine();
+
+                        System.out.print("\nDigite o código do prato: ");
+                        String codigo = sc.nextLine();
+
+                        System.out.print("\nDigite a descricao do prato: ");
+                        String descricao = sc.nextLine();
+
+                        System.out.print("\nDigite o tempo de preparo do prato(hh:mm): ");
+                        String tempoPreparo = sc.nextLine();
+
+                        System.out.print("\nDigite o precoUnitario do prato: ");
+                        Float precoUnitario = sc.nextFloat();
+                        sc.nextLine();
+
+                        System.out.println("\nPressione 'Enter' para não adicionar o ingrediente e 'x' para adicionar: ");
+                        listaIngredientes.clear();
+                        for (Ingrediente i : Restaurante.estoque) {
+                            System.out.printf("\n- " + i.getNome() + ": ");
+                            String inputOp = sc.nextLine();
+                            if (inputOp.equals("x")) {
+                                listaIngredientes.add(i);
+                            }
+                        }
+
+                        PratoPrincipal p = new PratoPrincipal(nome, codigo, precoUnitario, listaIngredientes, descricao, tempoPreparo);
+                        p.calculaPrecoCusto();
+                        Restaurante.pratosPrincipais.add(p);
+
+                    } else if (opc.equals("r")) {
+
+                        System.out.println("\nPressione 'Enter' para não remover o prato e 'x' para remover: ");
+                        for (PratoPrincipal p : Restaurante.pratosPrincipais) {
+                            System.out.printf("\n- " + p.getNome() + ": ");
+                            String inputOp = sc.nextLine();
+                            if (inputOp.equals("x")) {
+                                Restaurante.pratosPrincipais.remove(p);
+                            }
+                        }
+                    }
+
+                }
+                case 2 -> {
+
+                    System.out.print("\nDeseja adicionar uma nova sobremesa(a) ou remover uma sobremesa(r): ");
+                    String opc = sc.nextLine();
+                    ArrayList<Ingrediente> listaIngredientes = new ArrayList<Ingrediente>();
+
+                    if (opc.equals("a")) {
+
+                        System.out.print("\nDigite o nome da sobremesa: ");
+                        String nome = sc.nextLine();
+
+                        System.out.print("\nDigite o código da sobremesa: ");
+                        String codigo = sc.nextLine();
+
+                        System.out.print("\nDigite a descricao da sobremesa: ");
+                        String descricao = sc.nextLine();
+
+                        System.out.print("\nDigite o tempo de preparo da sobremesa(hh:mm): ");
+                        String tempoPreparo = sc.nextLine();
+
+                        System.out.print("\nDigite o precoUnitario da sobremesa: ");
+                        Float precoUnitario = sc.nextFloat();
+                        sc.nextLine();
+
+                        System.out.println("\nPressione 'Enter' para não adicionar o ingrediente e 'x' para adicionar: ");
+                        listaIngredientes.clear();
+                        for (Ingrediente i : Restaurante.estoque) {
+                            System.out.printf("\n- " + i.getNome() + ": ");
+                            String inputOp = sc.nextLine();
+                            if (inputOp.equals("x")) {
+                                listaIngredientes.add(i);
+                            }
+                        }
+
+                        System.out.print("\nDigite a quantidade de calorias na sobremesa: ");
+                        Double calorias = sc.nextDouble();
+
+                        Sobremesa s = new Sobremesa(nome, codigo, precoUnitario, listaIngredientes, descricao, tempoPreparo, calorias);
+                        s.calculaPrecoCusto();
+                        Restaurante.sobremesas.add(s);
+
+                    } else if (opc.equals("r")) {
+
+                        System.out.println("\nPressione 'Enter' para não remover a sobremesa e 'x' para remover: ");
+                        for (Sobremesa s : Restaurante.sobremesas) {
+                            System.out.printf("\n- " + s.getNome() + ": ");
+                            String inputOp = sc.nextLine();
+                            if (inputOp.equals("x")) {
+                                Restaurante.sobremesas.remove(s);
+                            }
+                        }
+
+                    }
+
+                }
+                case 3 -> {
+
+                    System.out.print("\nDeseja adicionar uma nova bebida(a) ou remover uma bebida(r): ");
+                    String opc = sc.nextLine();
+
+                    if (opc.equals("a")) {
+
+                        System.out.print("\nDigite o Nome da nova bebida: ");
+                        String nome = sc.nextLine();
+
+                        System.out.print("\nDigite o Codigo da nova bebida: ");
+                        String codigo = sc.nextLine();
+
+                        System.out.print("\nDigite o Preço da nova bebida: ");
+                        Double precoUnitario = sc.nextDouble();
+
+                        System.out.print("\nDigite o Preço de Custo da nova bebida: ");
+                        Double precoCusto = sc.nextDouble();
+
+                        System.out.print("\nDigite o Tamanho da nova bebida: ");
+                        int tamanho = sc.nextInt();
+
+                        System.out.print("\nQual o tipo de Embalagem da nova bebida: ");
+                        System.out.print("\nLata(1)\nGarrafa Plástica(2)\nGarrafa de Vidro(3)\nRefil(4)\n:->");
+                        String tipoEmbalagem;
+                        switch (sc.nextInt()) {
+                            default -> tipoEmbalagem = "LATA";
+                            case 2 -> tipoEmbalagem = "GARRAFA_PLASTICA";
+                            case 3 -> tipoEmbalagem = "GARRAFA_VIDRO";
+                            case 4 -> tipoEmbalagem = "COPO_REFIL";
+                        }
+
+                        Bebida b = new Bebida(nome, codigo, precoUnitario, precoCusto, tamanho, tipoEmbalagem);
+                        Restaurante.bebidas.add(b);
+
+                    } else if (opc.equals("x")) {
+
+                        System.out.println("\nPressione 'Enter' para não remover a bebida e 'x' para remover: ");
+                        for (Bebida b : Restaurante.bebidas) {
+
+                            b.mostrarBasico();
+                            String inputOp = sc.nextLine();
+                            if (inputOp.equals("x")) {
+                                Restaurante.sobremesas.remove(b);
+                            }
+
+                        }
+
+                    }
+
+                }
+                case 4 -> {}
+            }
+        }while(repeteLoopMenu);
+    }
+
+    public static void conferir(){
+
     }
 
 

@@ -19,11 +19,13 @@ public class Restaurante {
         public static ArrayList<Bebida> bebidas = new ArrayList<Bebida>();
         public static ArrayList<Ingrediente> estoque = new ArrayList<Ingrediente>();
         public static ArrayList<Pedido> pedidosMensais = new ArrayList<Pedido>();
+        public static ArrayList<Pedido> pedidosAbertos = new ArrayList<Pedido>();
         public static Stack<Pedido> pedidosEsperandoAprovacao = new Stack<Pedido>();
         public static ArrayList<Divida> dividas = new ArrayList<Divida>();
         public static double caixa = 500000;
         public static LocalDateTime dataCentral = LocalDateTime.now();
         public static DiasEnum diaSemana = DiasEnum.SEGUNDA;
+        public static int mesaMAX = 15;
         public static boolean balancoMensal;
 
         public static void mostrarGarcons(){

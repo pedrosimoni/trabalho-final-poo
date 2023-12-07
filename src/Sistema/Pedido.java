@@ -1,8 +1,10 @@
 package Sistema;
 import Enums.FormaPagamentoEnum;
+import Excecoes.IngredientesInsuficientes;
 import Itens.*;
 import Funcionarios.*;
 
+import javax.naming.CompositeName;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,8 +15,10 @@ import static Sistema.Restaurante.diaSemana;
 
 public class Pedido {
     private ArrayList<Item> itensPedido = new ArrayList<Item>();
-    private Cozinheiro cozinheiro;
+    private Cozinheiro cozinheiroPrincipal;
+    private Cozinheiro cozinheiroSobremesa;
     private Garcom garcom;
+    private int mesa;
     private double valorTotal = 0;
     private LocalDateTime dataHoraRegistro;
     private LocalDateTime dataHoraPagamento;
@@ -23,41 +27,36 @@ public class Pedido {
     private static int limitador_sobremesas = 4;
     private static int limitador_bebidas = 8;
 
-    public Pedido(Item []itensPedido, Cozinheiro cozinheiro, Garcom garcom,  String data){
-        this.itensPedido.addAll(Arrays.asList(itensPedido));
+    public Pedido(ArrayList<Item> itensPedido, Garcom garcom, int mesa) throws IngredientesInsuficientes {
+        this.itensPedido.addAll(itensPedido);
 
         for(Item i : itensPedido){
             i.venda();
         }
 
-        this.cozinheiro = cozinheiro;
+        escolherCozinheiros();
         this.garcom = garcom;
         this.dataHoraRegistro = Restaurante.dataCentral;
 
         garcom.pedidoFeito();
-        cozinheiro.pedidoFeito();
+        cozinheiroPrincipal.pedidoFeito();
+        cozinheiroSobremesa.pedidoFeito();
+        this.mesa = mesa;
 
         System.out.println("Pedido registrado com sucesso!");
     }
 
-    public Pedido(Cozinheiro cozinheiro, Garcom garcom, String data){
-        this.cozinheiro = cozinheiro;
+    public Pedido(Garcom garcom){
+        escolherCozinheiros();
         this.garcom = garcom;
         this.dataHoraRegistro = Restaurante.dataCentral;
     }
 
-    public Pedido(){
-        this.cozinheiro = null;
-        this.garcom = null;
-        this.dataHoraRegistro = Restaurante.dataCentral;
-        this.pagamento = null;
-    }
-
-    public void adicionaPedido(Item []itensPedidos){
-        for(Item i : itensPedidos){
+    public void adicionaPedido(ArrayList<Item> itensPedido) throws IngredientesInsuficientes{
+        for(Item i : itensPedido) {
             i.venda();
         }
-        this.itensPedido.addAll(Arrays.asList((itensPedidos)));
+        this.itensPedido.addAll(itensPedido);
     }
 
     public void mostrar(){
@@ -65,13 +64,29 @@ public class Pedido {
         for(Item i : itensPedido){
             System.out.println("    " + i.getNome());
         }
-        System.out.println("Cozinheiro Responsável: ");
-        cozinheiro.mostrar();
+        System.out.println("Cozinheiro Responsável pelos Pratos Principais: ");
+        cozinheiroPrincipal.mostrar();
+        System.out.println("Cozinheiro Responsável pelas Sobremesas: ");
+        cozinheiroSobremesa.mostrar();
         System.out.println("Garçom responsável: ");
         garcom.mostrar();
-        System.out.println("Valor total: " + valorTotal);
+        calculaTotal();
+        System.out.println("Valor: " + valorTotal);
         System.out.println("Data e Hora de Registro: " + dataHoraRegistro.toString());
         System.out.println("Data e Hora e Forma do pagamento: " + dataHoraPagamento.toString() + pagamento);
+
+    }
+
+    public void mostrarSimples(){
+
+        System.out.println("Itens: ");
+        for(Item i : itensPedido){
+            System.out.println("    " + i.getNome());
+        }
+        System.out.println("Garçom responsável: ");
+        garcom.mostrar();
+        calculaTotal();
+        System.out.println("Valor total: " + valorTotal);
 
     }
 
@@ -119,7 +134,7 @@ public class Pedido {
             }
         }
         Scanner sc = new Scanner(System.in);
-        cozinheiro = Restaurante.cozinheiros.get(sc.nextInt() + j+1);
+        cozinheiroPrincipal = Restaurante.cozinheiros.get(sc.nextInt() + j+1);
 
         System.out.println("Qual será o chef responsável pelas sobremesas?");
         i = j = 0;
@@ -130,6 +145,10 @@ public class Pedido {
                 j++;
             }
         }
-        cozinheiro = Restaurante.cozinheiros.get(sc.nextInt() + j+1);
+        cozinheiroSobremesa = Restaurante.cozinheiros.get(sc.nextInt() + j+1);
+    }
+
+    public int getMesa(){
+        return mesa;
     }
 }

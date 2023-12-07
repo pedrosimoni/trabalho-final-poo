@@ -3,7 +3,7 @@ import Excecoes.IngredientesInsuficientes;
 
 import java.io.*;
 
-public class Ingrediente implements PodeVender, Serializable{
+public class Ingrediente implements Serializable{
     private String nome;
     private int qntd;
     private double precoCusto;
@@ -14,9 +14,9 @@ public class Ingrediente implements PodeVender, Serializable{
         this.precoCusto = precoCusto;
     }
 
-    public void venda(){
+    public void venda() throws IngredientesInsuficientes{
         if(qntd == 0){
-            //throw new IngredientesInsuficientes("Ingrediente " + nome + "insuficiente! Deseja comprar mais?(y/n)");
+            throw new IngredientesInsuficientes("Ingrediente " + nome + "insuficiente! Deseja comprar mais?(s/n)");
         }else{
             qntd--;
         }
