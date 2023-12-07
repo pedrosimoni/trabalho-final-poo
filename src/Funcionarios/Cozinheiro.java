@@ -1,7 +1,6 @@
 package Funcionarios;
 
 import Excecoes.CPFInvalido;
-
 import java.time.LocalDate;
 
 public class Cozinheiro extends Funcionario{
@@ -47,32 +46,8 @@ public class Cozinheiro extends Funcionario{
         return pratoEspecializado;
     }
 
-    public void setPratoEspecializado(boolean pratoEspecializado) {
-        this.pratoEspecializado = pratoEspecializado;
-    }
-
-    public int getNumPratos() {
-        return numPratos;
-    }
-
     public void setNumPratos(int numPratos) {
         this.numPratos = numPratos;
-    }
-
-    public static double getBonificacaoPrincipal() {
-        return bonificacaoPrincipal;
-    }
-
-    public static void setBonificacaoPrincipal(double bonificacaoPrincipal) {
-        Cozinheiro.bonificacaoPrincipal = bonificacaoPrincipal;
-    }
-
-    public static double getBonificacaoSobremesa() {
-        return bonificacaoSobremesa;
-    }
-
-    public static void setBonificacaoSobremesa(double bonificacaoSobremesa) {
-        Cozinheiro.bonificacaoSobremesa = bonificacaoSobremesa;
     }
 }
 

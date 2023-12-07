@@ -2,7 +2,6 @@ package Itens;
 
 import Excecoes.IngredientesInsuficientes;
 import Sistema.Restaurante;
-
 import java.io.Serializable;
 
 abstract public class Item implements PodeVender, Serializable {
@@ -36,28 +35,9 @@ abstract public class Item implements PodeVender, Serializable {
         this.nome = nome;
     }
 
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
 
     public double getPrecoUnitario() {
         return precoUnitario;
     }
 
-    public void setPrecoUnitario(double precoUnitario) {
-        this.precoUnitario = precoUnitario;
-    }
-
-    public double getPrecoCusto() {
-        return precoCusto;
-    }
-
-
-    public void setPrecoCusto(double precoCusto) {
-        this.precoCusto = precoCusto;
-    }
 }
