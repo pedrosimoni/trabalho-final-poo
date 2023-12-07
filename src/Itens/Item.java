@@ -5,7 +5,7 @@ import Sistema.Restaurante;
 
 import java.io.Serializable;
 
-abstract public class Item implements Serializable {
+abstract public class Item implements PodeVender, Serializable {
     protected String nome;
     protected String codigo;
     protected double precoUnitario;
@@ -24,7 +24,7 @@ abstract public class Item implements Serializable {
         this.precoUnitario = precoUnitario;
     }
 
-    public void venda(){
+    public void venda() throws IngredientesInsuficientes{
         Restaurante.adicionarCaixa(precoUnitario - precoCusto);
     }
 

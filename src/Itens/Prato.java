@@ -4,6 +4,7 @@ import Excecoes.IngredientesInsuficientes;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Prato extends Item{
     protected ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
@@ -23,10 +24,26 @@ public class Prato extends Item{
         System.out.println("    R$" + precoUnitario);
     }
 
-    public void venda(){
+    public void venda() throws IngredientesInsuficientes{
         super.venda();
         for(Ingrediente i: ingredientes){
-            i.venda();
+            try{
+                i.venda();
+            }catch(IngredientesInsuficientes p){
+                p.toString();
+                Scanner sc = new Scanner(System.in);
+                if(sc.nextLine().equals("s")){
+                    System.out.print("\nDigite a quantidade: ");
+                    i.compra(sc.nextInt());
+                    try{
+                        i.venda();
+                    }catch(IngredientesInsuficientes pn){
+                        throw p;
+                    }
+                }else{
+                    throw p;
+                }
+            }
         }
     }
 
