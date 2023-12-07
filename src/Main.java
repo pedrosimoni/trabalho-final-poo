@@ -69,7 +69,7 @@ public class Main {
             ArrayList<Item> listaItens = new ArrayList<Item>();
 
             System.out.println("\nN/A -  Aprovar pedidos                               (R$" + Restaurante.caixa + ") Caixa");
-            System.out.println(" 1  -  Fazer compras                                 (" + Restaurante.pedidosEsperandoAprovacao.size() + ") Pedidos");
+            System.out.println(" 1  -  Fazer compras                                   (" + Restaurante.pedidosEsperandoAprovacao.size() + ") Pedidos");
             System.out.println(" 2  -  Dar baixa em um pedido");
             System.out.println(" 3  -  Adicionar pedido manualmente");
             System.out.println(" 4  -  Adicionar itens a um pedido");
