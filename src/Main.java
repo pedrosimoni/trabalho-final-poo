@@ -1,4 +1,6 @@
+import Enums.DiasEnum;
 import Enums.EmbalagensEnum;
+import Enums.FormaPagamentoEnum;
 import Excecoes.CPFInvalido;
 import Excecoes.SaldoInsuficiente;
 import Excecoes.IngredientesInsuficientes;
@@ -15,13 +17,14 @@ import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
+import static Enums.FormaPagamentoEnum.*;
+
 
 public class Main {
     public static void main(String[] args) {
         Timer t = new Timer();
         Persistencia pers = new Persistencia();
         pers.leBase();
-
         TimerTask tt = new TimerTask() {
             public void run() {
                 if(Restaurante.dataCentral.getHour() == 0){
@@ -68,13 +71,15 @@ public class Main {
             Scanner sc = new Scanner(System.in);
             ArrayList<Item> listaItens = new ArrayList<Item>();
 
-            System.out.println("N/A -  Aprovar pedidos                               (R$" + Restaurante.caixa + ") Caixa");
-            System.out.println(" 1  -  Fazer compras                                 (" + Restaurante.pedidosEsperandoAprovacao.size() + ") Pedidos");
-            System.out.println(" 2  -  Adicionar pedido manualmente");
-            System.out.println(" 3  -  Adicionar itens a um pedido");
-            System.out.println(" 4  -  Cadastrar/Remover itens");
-            System.out.println(" 5  -  Conferir restaurante");
-            System.out.println(" 6  -  Sair");
+            System.out.println("\nN/A -  Aprovar pedidos                               (R$" + Restaurante.caixa + ") Caixa");
+            System.out.println(" 1  -  Fazer compras                                   (" + Restaurante.pedidosEsperandoAprovacao.size() + ") Pedidos");
+            System.out.println(" 2  -  Dar baixa em um pedido");
+            System.out.println(" 3  -  Adicionar pedido manualmente");
+            System.out.println(" 4  -  Adicionar itens a um pedido");
+            System.out.println(" 5  -  Cadastrar/Remover itens");
+            System.out.println(" 6  -  Conferir restaurante");
+            System.out.println(" 7  -  Operações financeiras");
+            System.out.println(" 8  -  Sair");
             System.out.print("Escolha uma opção: ");
             op = sc.nextInt();
             sc.nextLine();
@@ -92,6 +97,30 @@ public class Main {
                 }
                 case 2 -> {
 
+                    System.out.print("\nPressione 'x' para escolher um pedido: ");
+                    for (Pedido p : Restaurante.pedidosAbertos) {
+                        System.out.print("\n- Mesa " + p.getMesa() + ": ");
+                        if (sc.nextLine().equals("x")) {
+                            System.out.print("\nEscolha uma forma de pagamento: ");
+                            System.out.print("\n(1) Dinheiro / (2) Débito / (3) Crédito");
+                            int opt = sc.nextInt();
+                            if(opt == 1){
+                                p.pagarConta(DINHEIRO);
+                            }else if(opt == 2){
+                                p.pagarConta(DEBITO);
+                            }else if(opt == 3){
+                                p.pagarConta(CREDITO);
+                            }
+
+                            break;
+                        }
+
+
+                    }
+                }
+
+
+                case 3 -> {
                     System.out.print("\nPressione 'x' para adicionar o prato: \n");
                     listaItens.clear();
                     for (PratoPrincipal p : Restaurante.pratosPrincipais){
@@ -127,10 +156,8 @@ public class Main {
                     }catch (IngredientesInsuficientes i){
                         System.out.print("\nPedido não efetuado!");
                     }
-
                 }
-                case 3 -> {
-
+                case 4 -> {
                     System.out.print("\nPressione 'x' para escolher um pedido: ");
                     for(Pedido p : Restaurante.pedidosAbertos){
                         System.out.print("\n- Mesa " + p.getMesa() + ": ");
@@ -151,23 +178,41 @@ public class Main {
                             }
                         }
                     }
-
-                }
-                case 4 -> {
-
-                    cadastrarXremover();
-
                 }
                 case 5 -> {
-
-                    conferir();
-
+                    cadastrarXremover();
                 }
-
                 case 6 -> {
+                    conferir();
+                }
+                case 7 -> {
+                    boolean repeteLoopMenuInterno = true;
+                    do {
+                        int opi;
 
-                    repeteLoopMenu = false;
+                        System.out.println("1 - Pagar dívidas");
+                        System.out.println("2 - Ver o balanço mensal");
+                        System.out.println("3 - Operações de caixa");
+                        System.out.println("Digite qualquer outra tecla para sair.");
+                        System.out.print("Escolha uma opção: ");
+                        opi = sc.nextInt();
+                        sc.nextLine();
 
+                        switch (opi) {
+                            case 1 -> {
+                                pagarDividas();
+                            }
+                            case 2 -> {
+                                balnçoMensal();
+                            }
+                            case 3 -> {
+                                operacoesDeCaixa();
+                            }
+                            default -> {
+                                repeteLoopMenuInterno = false;
+                            }
+                        }
+                    }while(repeteLoopMenuInterno);
                 }
                 default -> {
 
@@ -588,7 +633,7 @@ public class Main {
         }while(repeteLoopMenu);
     }
 
-    public static void conferir(){
+    public static void conferir() {
         boolean repeteLoopMenu = true;
         do {
 
@@ -605,9 +650,37 @@ public class Main {
             sc.nextLine();
 
             switch (op) {
+                case 1 -> {
 
+                    for (Ingrediente in : Restaurante.estoque) {
+                        System.out.print("\n" + in.getNome());
+                    }
+                    System.out.println();
+
+                }
+                case 2 -> {
+
+                    Restaurante.menu();
+
+                }
+                case 3 -> {
+
+                    for (Pedido pn : Restaurante.pedidosMensais){
+                        pn.mostrar();
+                    }
+
+                }
+                case 4 -> {
+
+                    Restaurante.mostrarCozinheiros();
+                    Restaurante.mostrarGarcons();
+
+                }
+                default -> {
+                    repeteLoopMenu = false;
+                }
             }
-        }while(false);
+        }while(repeteLoopMenu);
     }
 
     private static void saldoInsuficiente(SaldoInsuficiente f){

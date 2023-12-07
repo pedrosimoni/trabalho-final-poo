@@ -32,6 +32,7 @@ public class Restaurante {
             System.out.println("Garçons trabalhando hoje: ");
             for(Garcom g: garcons){
                 if(g.getDiaFolga() != diaSemana){
+                    g.calculaSalario();
                     g.mostrar();
                 }
             }
@@ -40,7 +41,8 @@ public class Restaurante {
         public static void mostrarCozinheiros(){
             System.out.println("Cozinheiros trabalhando hoje: ");
             for(Cozinheiro c: cozinheiros){
-               c.mostrar();
+                c.calculaSalario();
+                c.mostrar();
             }
         }
 
