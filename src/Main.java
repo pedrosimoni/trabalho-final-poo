@@ -43,7 +43,6 @@ public class Main {
             Garcom garconEscolhido;
             Random rand = new Random();
             public void run(){
-                System.out.println("Eba novo pedido!");
                 do{
                     garconEscolhido = Restaurante.garcons.get(rand.nextInt(Restaurante.garcons.size()));
                 }while(garconEscolhido.getDiaFolga() == Restaurante.diaSemana);
