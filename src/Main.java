@@ -62,7 +62,7 @@ public class Main {
             Scanner sc = new Scanner(System.in);
             ArrayList<Item> listaItens = new ArrayList<Item>();
 
-            System.out.println("\nN/A -   Aprovar pedidos                                 (R$" + Restaurante.caixa + ") Caixa");
+            System.out.println("\nN/A  -   Aprovar pedidos                                 (R$" + Restaurante.caixa + ") Caixa");
             System.out.println(" 1   -   Fazer compras                                   (" + Restaurante.pedidosEsperandoAprovacao.size() + ") Pedidos");
             System.out.println(" 2   -   Pagar um pedido                                 (" + Restaurante.diaSemana + ")");
             System.out.println(" 3   -   Adicionar pedido manualmente");
@@ -205,7 +205,7 @@ public class Main {
                         }
                     }while(repeteLoopMenuInterno);
                 }
-                case 9 -> {
+                case 8 -> {
                     repeteLoopMenu = false;
                 }
                 default -> {
@@ -228,8 +228,10 @@ public class Main {
                 }
             }
         } while (repeteLoopMenu);
+        System.out.println("Obrigado por usar o programa!");
         pers.gravaBase();
         pers.fecharArquivos();
+        System.exit(0);
     }
 
     private static void cadastrarXremover(){
