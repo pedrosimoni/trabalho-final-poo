@@ -25,7 +25,6 @@ public class Main {
                     //System.out.println("Hoje é dia " + Restaurante.dataCentral.getDayOfMonth() + ", " + Restaurante.diaSemana.toString());
                     if (Restaurante.dataCentral.getDayOfMonth() == Restaurante.dataCentral.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth()) {
                         System.out.println("Fim de mês!!");
-
                         if (Garcom.numPedidos > Garcom.metaPedidos) {
                             Garcom.bateuMeta = true;
                             System.out.println("Os garçons bateram a meta de pedidos feitos esse mês!!");
@@ -35,22 +34,7 @@ public class Main {
                         }
 
                         Garcom.numPedidos = 0;
-                        for (Garcom g : Restaurante.garcons) {
-                            g.calculaSalario();
-                        }
-
-                        for (Cozinheiro c : Restaurante.cozinheiros) {
-                            c.calculaSalario();
-                            c.setNumPratos(0);
-                        }
-                        pedidosMensais();
-                        try{
-                            Restaurante.pagarCozinheiros();
-                            Restaurante.pagarGarcons();
-                        }catch (SaldoInsuficiente f){
-                            saldoInsuficiente(f);
-                        }
-
+                        Restaurante.balancoMensal = true;
                     }
                 }
                 Restaurante.dataCentral = Restaurante.dataCentral.plusMinutes(5);
@@ -89,6 +73,7 @@ public class Main {
             System.out.println("9 -  Olhar cardápio");
             System.out.println("10 - Ver histórico de pedidos do mês");
             System.out.println("11 - Calcular e mostrar salários dos funcionários");
+            // consultarOBalançoMensal pagarDividas fazerOperaçõesDeCaixa
             System.out.println("12 - Sair");
             System.out.print("Escolha uma opção: ");
             op = sc.nextInt();
@@ -299,7 +284,7 @@ public class Main {
                         System.out.print("\n" + in.getNome() + ": ");
                         in.compra(sc.nextInt());
                     }
-                    System.out.print("\nObrigado por comprar!");
+                    System.out.print("\nObrigado por comprar!\n");
                 }
                 case 8 -> {
                     for (Ingrediente in : Restaurante.estoque) {
@@ -429,4 +414,28 @@ public class Main {
         }
         System.out.println("Quantidade registrada");
     }
+
+    private static void balnçoMensal(){
+        if(Restaurante.balancoMensal){
+            for (Garcom g : Restaurante.garcons) {
+                g.calculaSalario();
+            }
+
+            for (Cozinheiro c : Restaurante.cozinheiros) {
+                c.calculaSalario();
+                c.setNumPratos(0);
+            }
+            pedidosMensais();
+            try{
+                Restaurante.pagarCozinheiros();
+                Restaurante.pagarGarcons();
+            }catch (SaldoInsuficiente f){
+                saldoInsuficiente(f);
+            }
+            Restaurante.balancoMensal = false;
+        }else{
+            System.out.println("Você não possui nenhum balanço mensal disponível");
+        }
+    }
+
 }

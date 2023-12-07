@@ -24,6 +24,7 @@ public class Restaurante {
         public static double caixa = 500000;
         public static LocalDateTime dataCentral = LocalDateTime.now();
         public static DiasEnum diaSemana = DiasEnum.SEGUNDA;
+        public static boolean balancoMensal;
 
         public static void mostrarGarcons(){
             System.out.println("Garçons trabalhando hoje: ");
