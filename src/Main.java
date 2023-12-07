@@ -584,9 +584,9 @@ public class Main {
         }while(repeteLoopMenu);
     }
 
-    public static void conferir(){
+    public static void conferir() {
         boolean repeteLoopMenu = true;
-        do{
+        do {
 
             int op;
             Scanner sc = new Scanner(System.in);
@@ -600,10 +600,39 @@ public class Main {
             op = sc.nextInt();
             sc.nextLine();
 
-            switch(op) {
+            switch (op) {
+                case 1 -> {
 
+                    for (Ingrediente in : Restaurante.estoque) {
+                        System.out.print("\n" + in.getNome());
+                    }
+                    System.out.println();
+
+                }
+                case 2 -> {
+
+                    Restaurante.menu();
+
+                }
+                case 3 -> {
+
+                    for (Pedido pn : Restaurante.pedidosMensais){
+                        pn.mostrar();
+                    }
+
+                }
+                case 4 -> {
+
+                    Restaurante.mostrarCozinheiros();
+                    Restaurante.mostrarGarcons();
+
+                }
+                default -> {
+                    repeteLoopMenu = false;
+                }
             }
-
+        }while(repeteLoopMenu);
+    }
 
     private static void saldoInsuficiente(SaldoInsuficiente f){
         Scanner sc = new Scanner(System.in);
