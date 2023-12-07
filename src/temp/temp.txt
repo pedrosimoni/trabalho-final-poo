@@ -1,24 +1,16 @@
-novo prato principal:
-nova sobremesa:
-novo garçom:
-novo cozinheiro:
- nova Bebida:
- novo ingrediente:
-
- fazer compras:
- olhar estoque:
+olhar estoque:
         for (Ingrediente in : Restaurante.estoque) {
         System.out.print("\n" + in.getNome());
         }
         System.out.println();
- olhar cardápio:
+olhar cardápio:
 
         Restaurante.menu();
-        ver histório de pedidos no mes:
+ver histório de pedidos no mes:
         for (Pedido pn : Restaurante.pedidosMensais){
         pn.mostrar();
         }
- calcular e mostrar salários dos funcionarios:
+calcular e mostrar salários dos funcionarios:
 
         Restaurante.mostrarCozinheiros();
         Restaurante.mostrarGarcons();

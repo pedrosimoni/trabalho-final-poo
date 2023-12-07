@@ -47,7 +47,6 @@ public class Pedido {
     }
 
     public Pedido(Garcom garcom){
-        escolherCozinheiros();
         this.garcom = garcom;
         this.dataHoraRegistro = Restaurante.dataCentral;
     }
@@ -121,6 +120,7 @@ public class Pedido {
             Bebida b = Restaurante.bebidas.get(rand.nextInt(Restaurante.bebidas.size()));
             itensPedido.add(b);
         }
+        escolherCozinheiros();
     }
 
     public void escolherCozinheiros(){

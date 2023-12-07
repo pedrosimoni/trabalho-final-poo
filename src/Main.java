@@ -585,8 +585,24 @@ public class Main {
     }
 
     public static void conferir(){
+        boolean repeteLoopMenu = true;
+        do{
 
-    }
+            int op;
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("1 - Olhar estoque");
+            System.out.println("2 - Olhar cardápio");
+            System.out.println("3 - Ver histórico mensal de pedidos");
+            System.out.println("4 - Calcular e mostrar salários");
+            System.out.println("Digite qualquer outra tecla para sair.");
+            System.out.print("Escolha uma opção: ");
+            op = sc.nextInt();
+            sc.nextLine();
+
+            switch(op) {
+
+            }
 
 
     private static void saldoInsuficiente(SaldoInsuficiente f){
